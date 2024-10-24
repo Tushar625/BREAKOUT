@@ -65,9 +65,9 @@ class initial_state : public BASE_STATE
 
 			quit.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT");
 
-			high_score.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "MAX SCORE");
+			high_score.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES");
 
-			play.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "PLAY");
+			play.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START");
 
 			// breakout text
 
@@ -99,6 +99,13 @@ class initial_state : public BASE_STATE
 			INPUT.isPressed(sf::Keyboard::Scan::Enter)
 		);
 
+		// play = 0, high_score = 1, quit = 2
+
+		if (sel == 0)
+		{
+			return PLAY;
+		}
+		
 		if (sel == 2)
 		{
 			return EXIT;

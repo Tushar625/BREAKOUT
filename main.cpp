@@ -12,11 +12,11 @@ unsigned int set_antialiashing()
 
 // loading the game states into the state machine
 
-STATE_MACHINE game_state({ &initial });
+STATE_MACHINE game_state({ &initial, &play });
 
 inline bool Game::Create()
 {
-	WINDOW.setTitle("Breakout prototype 1");
+	WINDOW.setTitle("Breakout prototype 2");
 
 
 
@@ -43,18 +43,6 @@ inline bool Game::Create()
 
 
 
-	/*{
-		std::string texture_arr[] = {"background", "breakout", "arrows", "hearts", "particle", "texture_count"};
-
-		for (int i = BACKGROUND; i < TEXTURE_COUNT; ++i)
-		{
-			if (!texture[i].loadFromFile("image/" + texture_arr[i] + ".png"))
-			{
-				std::cout << "can't load " << texture_arr[i] << "\n";
-			}
-		}
-	}*/
-
 	if (!texture[BACKGROUND].loadFromFile("image/background.png"))
 	{
 		std::cout << "can't load background\n";
@@ -79,6 +67,14 @@ inline bool Game::Create()
 	{
 		std::cout << "can't load particles\n";
 	}
+
+
+
+	// generating sprites
+
+
+
+	sprite[PADDLE] = get_paddle_sprites();
 
 
 	
@@ -159,7 +155,6 @@ inline bool Game::Create()
 
 	
 	// setting window size
-
 
 
 

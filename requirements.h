@@ -17,4 +17,10 @@
 
 #include"assets.h"
 
+#include"util.h"
+
+#include"paddle.h"
+
 #include"game_state/initial_state.h"
+
+#include"game_state/play_state.h"
