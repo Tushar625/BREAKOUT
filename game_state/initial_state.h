@@ -79,8 +79,6 @@ class initial_state : public BASE_STATE
 
 			to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
 
-			breakout.setOrigin(sf::Vector2f());
-
 			breakout.setPosition(sf::Vector2f(xout, yout - 10));
 
 			uninitialized = false;
