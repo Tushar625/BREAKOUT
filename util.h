@@ -1,8 +1,10 @@
 #pragma once
 
-std::vector<sf::Sprite> get_paddle_sprites()
+// functions needed to load assests
+
+std::vector<sf::Sprite> get_paddle_sprites(const sf::Texture& texture)
 {
-	std::vector<sf::Sprite> paddles(16, sf::Sprite{ texture[MAIN]});
+	std::vector<sf::Sprite> paddles(16, sf::Sprite{ texture });
 
 	int x = 0, y = 64;
 
@@ -24,9 +26,9 @@ std::vector<sf::Sprite> get_paddle_sprites()
 	return paddles;
 }
 
-std::vector<sf::Sprite> get_ball_sprites()
+std::vector<sf::Sprite> get_ball_sprites(const sf::Texture& texture)
 {
-	std::vector<sf::Sprite> balls(7, sf::Sprite{ texture[MAIN] });
+	std::vector<sf::Sprite> balls(7, sf::Sprite{ texture });
 
 	int counter = 0;
 
@@ -53,9 +55,9 @@ std::vector<sf::Sprite> get_ball_sprites()
 	return balls;
 }
 
-std::vector<sf::Sprite> get_brick_sprites()
+std::vector<sf::Sprite> get_brick_sprites(const sf::Texture& texture)
 {
-	std::vector<sf::Sprite> bricks(21, sf::Sprite{ texture[MAIN] });
+	std::vector<sf::Sprite> bricks(21, sf::Sprite{ texture });
 
 	int counter = 0;
 

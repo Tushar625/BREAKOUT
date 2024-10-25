@@ -15,9 +15,9 @@
 
 #include"constants.h"
 
-#include"assets.h"
-
 #include"util.h"
+
+#include"assets.h"
 
 #include"paddle.h"
 
