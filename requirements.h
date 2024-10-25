@@ -21,6 +21,8 @@
 
 #include"paddle.h"
 
+#include"ball.h"
+
 #include"game_state/initial_state.h"
 
 #include"game_state/play_state.h"

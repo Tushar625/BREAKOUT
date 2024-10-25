@@ -51,6 +51,13 @@ class initial_state : public BASE_STATE
 
 	sf::Text breakout;
 
+	public:
+
+	initial_state() : menu({ &play, &high_score, &quit }), uninitialized(true)
+	{}
+
+	private:
+
 	void Enter()
 	{
 		music.setLoop(true);
@@ -146,9 +153,4 @@ class initial_state : public BASE_STATE
 
 		WINDOW.draw(medium_text);
 	}
-
-	public:
-	
-	initial_state() : menu({ &play, &high_score, &quit }), uninitialized(true)
-	{}
 }initial;

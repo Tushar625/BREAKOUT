@@ -76,6 +76,8 @@ inline bool Game::Create()
 
 	sprite[PADDLE] = get_paddle_sprites();
 
+	sprite[BALL] = get_ball_sprites();
+
 
 	
 	// loading sounds

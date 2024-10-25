@@ -11,6 +11,16 @@ class paddle_class
 	paddle_class() : dx(200), x(0), y(0), size(1), color(0)
 	{}
 
+	int get_width()
+	{
+		return (size + 1) * 32;
+	}
+
+	int get_height()
+	{
+		return 16;
+	}
+
 	void update(double dt)
 	{
 		if (INPUT.isHeld(sf::Keyboard::Scan::Left))
