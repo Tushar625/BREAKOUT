@@ -24,7 +24,7 @@ class str_button : public BUTTON
 
 	public:
 
-	void initialize(int xin, int yin, std::string button_str)
+	str_button(int xin, int yin, std::string button_str)
 	{
 		button_text = medium_text;	// button text will have sam eproperties as medium text
 
@@ -45,16 +45,60 @@ class initial_state : public BASE_STATE
 {
 	str_button quit, high_score, play;
 
-	bool uninitialized;
-
 	BUTTON_LIST menu; // the menu to be displayed in this state
 
 	sf::Text breakout;
 
+	sf::Sound sound;
+
+	// pointer for menu as a static member function
+
+	static void pointer(BUTTON_LIST& menu)
+	{
+		auto button = menu.get_mbutton<str_button>();
+
+		medium_text.setFillColor(sf::Color::Cyan);
+
+		medium_text.setString(">>>");
+
+		medium_text.setPosition(sf::Vector2f(button.get_x() - medium_text.getLocalBounds().width - 20, button.get_y()));
+
+		WINDOW.draw(medium_text);
+
+		medium_text.setString("<<<");
+
+		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
+
+		WINDOW.draw(medium_text);
+	}
+
 	public:
 
-	initial_state() : menu({ &play, &high_score, &quit }), uninitialized(true)
-	{}
+	// initialize the buttons and manu
+
+	initial_state() :
+		
+		quit(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT"),
+		
+		high_score(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES"),
+		
+		play(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START"),
+
+		menu({ &play, &high_score, &quit })
+
+	{
+		// prepare the breakout text
+
+		breakout = large_text;
+
+		breakout.setString("BREAKOUT");
+
+		int xout, yout;
+
+		to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
+
+		breakout.setPosition(sf::Vector2f(xout, yout - 10));
+	}
 
 	private:
 
@@ -63,33 +107,6 @@ class initial_state : public BASE_STATE
 		music.setLoop(true);
 
 		music.play();
-
-		// initializing the buttons and breakout text only once
-		
-		if (uninitialized)
-		{
-			// buttons
-
-			quit.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT");
-
-			high_score.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES");
-
-			play.initialize(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START");
-
-			// breakout text
-
-			breakout = large_text;
-
-			breakout.setString("BREAKOUT");
-
-			int xout, yout;
-
-			to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
-
-			breakout.setPosition(sf::Vector2f(xout, yout - 10));
-
-			uninitialized = false;
-		}
 	}
 
 	int Update(double dt)
@@ -105,6 +122,20 @@ class initial_state : public BASE_STATE
 			INPUT.isPressed(sf::Keyboard::Scan::Down),
 			INPUT.isPressed(sf::Keyboard::Scan::Enter)
 		);
+
+		if (INPUT.isPressed(sf::Keyboard::Scan::Up) || INPUT.isPressed(sf::Keyboard::Scan::Down))
+		{
+			sound.setBuffer(sound_buffer[SELECT]);
+
+			sound.play();
+		}
+
+		if (INPUT.isReleasedM(sf::Mouse::Left) || INPUT.isPressed(sf::Keyboard::Scan::Enter))
+		{
+			sound.setBuffer(sound_buffer[CONFIRM]);
+
+			sound.play();
+		}
 
 		// play = 0, high_score = 1, quit = 2
 
@@ -131,26 +162,5 @@ class initial_state : public BASE_STATE
 	void Exit()
 	{
 		music.stop();
-	}
-
-	// pointer for menu as a static member function
-
-	static void pointer(BUTTON_LIST& menu)
-	{
-		auto button = menu.get_mbutton<str_button>();
-
-		medium_text.setFillColor(sf::Color::Cyan);
-
-		medium_text.setString(">>>");
-
-		medium_text.setPosition(sf::Vector2f(button.get_x() - medium_text.getLocalBounds().width - 20, button.get_y()));
-
-		WINDOW.draw(medium_text);
-
-		medium_text.setString("<<<");
-
-		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
-
-		WINDOW.draw(medium_text);
 	}
 }initial;

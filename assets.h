@@ -11,7 +11,7 @@ std::vector<sf::Texture> texture{ TEXTURE_COUNT };
 
 std::vector<std::vector<sf::Sprite>> sprite{ SPRITE_COUNT };
 
-std::vector<sf::SoundBuffer> sound{ SOUND_COUNT };
+std::vector<sf::SoundBuffer> sound_buffer{ SOUND_COUNT };
 
 sf::Music music;
 
@@ -95,67 +95,67 @@ class ASSET_LOADER
 
 
 
-		if (!sound[PADDLE_HIT].loadFromFile("sound/paddle_hit.wav"))
+		if (!sound_buffer[PADDLE_HIT].loadFromFile("sound/paddle_hit.wav"))
 		{
 			std::cout << "can't load paddle_hit\n";
 		}
 
-		if (!sound[SCORE].loadFromFile("sound/score.wav"))
+		if (!sound_buffer[SCORE].loadFromFile("sound/score.wav"))
 		{
 			std::cout << "can't load score\n";
 		}
 
-		if (!sound[WALL_HIT].loadFromFile("sound/wall_hit.wav"))
+		if (!sound_buffer[WALL_HIT].loadFromFile("sound/wall_hit.wav"))
 		{
 			std::cout << "can't load wall_hit\n";
 		}
 
-		if (!sound[CONFIRM].loadFromFile("sound/confirm.wav"))
+		if (!sound_buffer[CONFIRM].loadFromFile("sound/confirm.wav"))
 		{
 			std::cout << "can't load confirm\n";
 		}
 
-		if (!sound[SELECT].loadFromFile("sound/select.wav"))
+		if (!sound_buffer[SELECT].loadFromFile("sound/select.wav"))
 		{
 			std::cout << "can't load select\n";
 		}
 
-		if (!sound[NO_SELECT].loadFromFile("sound/no_select.wav"))
+		if (!sound_buffer[NO_SELECT].loadFromFile("sound/no_select.wav"))
 		{
 			std::cout << "can't load no_select\n";
 		}
 
-		if (!sound[BRICK_HIT_1].loadFromFile("sound/brick_hit_1.wav"))
+		if (!sound_buffer[BRICK_HIT_1].loadFromFile("sound/brick_hit_1.wav"))
 		{
 			std::cout << "can't load brick_hit_1\n";
 		}
 
-		if (!sound[BRICK_HIT_2].loadFromFile("sound/brick_hit_2.wav"))
+		if (!sound_buffer[BRICK_HIT_2].loadFromFile("sound/brick_hit_2.wav"))
 		{
 			std::cout << "can't load brick_hit_2\n";
 		}
 
-		if (!sound[HURT].loadFromFile("sound/hurt.wav"))
+		if (!sound_buffer[HURT].loadFromFile("sound/hurt.wav"))
 		{
 			std::cout << "can't load hurt\n";
 		}
 
-		if (!sound[VICTORY].loadFromFile("sound/victory.wav"))
+		if (!sound_buffer[VICTORY].loadFromFile("sound/victory.wav"))
 		{
 			std::cout << "can't load victory\n";
 		}
 
-		if (!sound[RECOVER].loadFromFile("sound/recover.wav"))
+		if (!sound_buffer[RECOVER].loadFromFile("sound/recover.wav"))
 		{
 			std::cout << "can't load recover\n";
 		}
 
-		if (!sound[HIGH_SCORE].loadFromFile("sound/high_score.wav"))
+		if (!sound_buffer[HIGH_SCORE].loadFromFile("sound/high_score.wav"))
 		{
 			std::cout << "can't load high_score\n";
 		}
 
-		if (!sound[PAUSE].loadFromFile("sound/pause.wav"))
+		if (!sound_buffer[PAUSE].loadFromFile("sound/pause.wav"))
 		{
 			std::cout << "can't load pause\n";
 		}

@@ -67,7 +67,7 @@ public:
 
 			dy = -dy;
 
-			snd.setBuffer(sound[WALL_HIT]);
+			snd.setBuffer(sound_buffer[WALL_HIT]);
 
 			snd.play();
 		}
@@ -80,7 +80,7 @@ public:
 
 			dx = -dx;
 
-			snd.setBuffer(sound[WALL_HIT]);
+			snd.setBuffer(sound_buffer[WALL_HIT]);
 
 			snd.play();
 		}
@@ -93,7 +93,7 @@ public:
 
 			dx = -dx;
 
-			snd.setBuffer(sound[WALL_HIT]);
+			snd.setBuffer(sound_buffer[WALL_HIT]);
 
 			snd.play();
 		}

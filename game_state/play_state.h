@@ -17,7 +17,7 @@ class play_state : public BASE_STATE
 	{
 		if (ball.collids(paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
 		{
-			snd.setBuffer(sound[PADDLE_HIT]);
+			snd.setBuffer(sound_buffer[PADDLE_HIT]);
 
 			snd.play();
 
