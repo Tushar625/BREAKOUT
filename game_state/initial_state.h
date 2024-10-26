@@ -130,7 +130,7 @@ class initial_state : public BASE_STATE
 			sound.play();
 		}
 
-		if (INPUT.isReleasedM(sf::Mouse::Left) || INPUT.isPressed(sf::Keyboard::Scan::Enter))
+		if ((INPUT.isReleasedM(sf::Mouse::Left) || INPUT.isPressed(sf::Keyboard::Scan::Enter)) && sel != -1) 
 		{
 			sound.setBuffer(sound_buffer[CONFIRM]);
 

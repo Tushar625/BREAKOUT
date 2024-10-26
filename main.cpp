@@ -19,7 +19,7 @@ inline bool Game::Create()
 	// setting window title
 
 
-	WINDOW.setTitle("Breakout prototype 2");
+	WINDOW.setTitle("Breakout prototype 3");
 
 	
 	// setting window size
@@ -36,7 +36,8 @@ inline bool Game::Create()
 
 	// other settings
 
-
+	WINDOW.setPosition(sf::Vector2i(100, 100));
+	
 	srand(time(0));
 
 	MY_GAME.set_fps(30);

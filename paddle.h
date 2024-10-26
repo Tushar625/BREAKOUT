@@ -21,16 +21,24 @@ class paddle_class
 		return 16;
 	}
 
-	void update(double dt)
+	// returns direction of movement
+
+	int update(double dt)
 	{
+		int dir = 0;
+
 		if (INPUT.isHeld(sf::Keyboard::Scan::Left))
 		{
 			x -= dx * dt;
+
+			dir = -1;
 		}
 
 		if (INPUT.isHeld(sf::Keyboard::Scan::Right))
 		{
 			x += dx * dt;
+
+			dir = 1;
 		}
 
 		if (x < 0)
@@ -42,6 +50,8 @@ class paddle_class
 		{
 			x = VIRTUAL_WIDTH - (size + 1) * 32;
 		}
+
+		return dir;
 	}
 
 	void render()

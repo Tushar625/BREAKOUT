@@ -23,6 +23,10 @@
 
 #include"ball.h"
 
+#include"brick.h"
+
+#include"level_maker.h"
+
 #include"game_state/initial_state.h"
 
 #include"game_state/play_state.h"
