@@ -48,24 +48,7 @@ public:
 		index = ball_type;
 	}
 
-	//bool collids(double xb, double yb, int widthb, int heightb)
-	//{
-	//	// if top of any of the boxes below the bottom of others
-
-	//	if (/* top */ y + height < yb || /* bottom */ yb + heightb < y)
-	//	{
-	//		return false;
-	//	}
-
-	//	// if left of any of the boxes after the right of others
-
-	//	if (/* left */ x + width < xb || /* right */ xb + widthb < x)
-	//	{
-	//		return false;
-	//	}
-
-	//	return true;
-	//}
+	// this collision detection function treats the ball as a circle
 
 	bool collids(double& xp, double& yp, double xb, double yb, int widthb, int heightb) const
 	{
@@ -79,21 +62,13 @@ public:
 
 		auto delta = center - box_center;
 
-		//std::cout << B.x << ", " << B.y << "\n";
-
-		//std::cout << C.x << ", " << C.y << "\n";
-		//
-		//std::cout << delta.x << ", " << delta.y << "\n";
-
 		delta.x = std::max(-aabb_half.x, std::min(delta.x, aabb_half.x));
 		
 		delta.y = std::max(-aabb_half.y, std::min(delta.y, aabb_half.y));
 
-		//std::cout << widthb / 2.0f << ", " << heightb / 2.0f << "\n";
-
-		//std::cout << delta.x << ", " << delta.y << "\n";
-
 		auto nearest_point = box_center + delta;	// point on the box
+
+		// nearest point on the serface of the box
 
 		xp = nearest_point.x;
 
@@ -101,20 +76,7 @@ public:
 
 		delta = nearest_point - center; // distance between P and C
 
-		//std::cout << xb << ", " << yb << "\n";
-
-		//std::cout << xb + widthb << ", " << yb + heightb << "\n";
-		
-		//std::cout << "a " << nearest_point.x << ", " << nearest_point.y << "\n";
-
 		auto dist = sqrt(delta.x * delta.x + delta.y * delta.y);
-
-		/*if (dist <= radius)
-		{
-			std::cout << "box: " << xb << ", " << yb << "\n";
-
-			std::cout << "ball: " << x << ", " << y << "\n";
-		}*/
 
 		return dist < radius;
 	}
