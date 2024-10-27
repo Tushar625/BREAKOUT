@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include<array>
+
 // creating the buttons
 
 class str_button : public BUTTON
@@ -43,13 +45,35 @@ class str_button : public BUTTON
 
 class initial_state : public BASE_STATE
 {
-	str_button quit, high_score, play;
+	// a structure nicely encaptulate the data used in this state (to save space) locally
 
-	BUTTON_LIST menu; // the menu to be displayed in this state
+	struct data
+	{
+		std::array<str_button, 3> button_arr;
 
-	sf::Text breakout;
+		BUTTON_LIST menu;	// the menu to be displayed in this state
 
-	sf::Sound sound;
+		sf::Text breakout;
+
+		data() :
+			button_arr{
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START"),
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES"),
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT")
+			},
+			menu({ &button_arr[0], &button_arr[1], &button_arr[2] })
+		{
+			breakout = large_text;
+
+			breakout.setString("BREAKOUT");
+
+			int xout, yout;
+
+			to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
+
+			breakout.setPosition(sf::Vector2f(xout, yout - 10));
+		}
+	} *pdata;
 
 	// pointer for menu as a static member function
 
@@ -72,38 +96,12 @@ class initial_state : public BASE_STATE
 		WINDOW.draw(medium_text);
 	}
 
-	public:
-
-	// initialize the buttons and manu
-
-	initial_state() :
-		
-		quit(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT"),
-		
-		high_score(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES"),
-		
-		play(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START"),
-
-		menu({ &play, &high_score, &quit })
-
-	{
-		// prepare the breakout text
-
-		breakout = large_text;
-
-		breakout.setString("BREAKOUT");
-
-		int xout, yout;
-
-		to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
-
-		breakout.setPosition(sf::Vector2f(xout, yout - 10));
-	}
-
-	private:
+	sf::Sound sound;
 
 	void Enter()
 	{
+		pdata = new data();	// creating the data used in this state
+
 		music.setLoop(true);
 
 		music.play();
@@ -113,7 +111,7 @@ class initial_state : public BASE_STATE
 	{
 		auto mpos = INPUT.pointer();
 
-		auto sel = menu.Update(
+		auto sel = pdata->menu.Update(
 			mpos.x,
 			mpos.y,
 			INPUT.isPressedM(sf::Mouse::Left),
@@ -154,13 +152,15 @@ class initial_state : public BASE_STATE
 
 	void Render()
 	{
-		menu.Render(initial_state::pointer);
+		pdata->menu.Render(initial_state::pointer);
 
-		WINDOW.draw(breakout);
+		WINDOW.draw(pdata->breakout);
 	}
 
 	void Exit()
 	{
+		delete pdata;	// delete the data of this state
+
 		music.stop();
 	}
 }initial;
