@@ -75,33 +75,77 @@ class level_maker
 
 				if (side.left)
 				{
-					ball.dx = -ball.dx;
+					if (ball.dx > 0)
+					{
+						// coming from left
+
+						ball.dx = -ball.dx;
+					}
+					else
+					{
+						// hitting top left or bottom left corner
+
+						ball.dy /= 1.05;
+					}
 
 					ball.x = brick.x - ball.get_width();
 				}
 
 				if (side.right)
 				{
-					ball.dx = -ball.dx;
+					if (ball.dx < 0)
+					{
+						// coming from right
+
+						ball.dx = -ball.dx;
+					}
+					else
+					{
+						// hitting top right or bottom right corner
+
+						ball.dy /= 1.05;
+					}
 
 					ball.x = brick.x + brick.get_width();
 				}
 
 				if (side.top)
 				{
-					ball.dy = -ball.dy;
+					if (ball.dy > 0)
+					{
+						// coming from top
+
+						ball.dy = -ball.dy;
+					}
+					else
+					{
+						// hitting top left or top right corner
+
+						ball.dx /= 1.05;
+					}
 
 					ball.y = brick.y - ball.get_height();
 				}
 				
 				if (side.bottom)
 				{
-					ball.dy = -ball.dy;
+					if (ball.dy < 0)
+					{
+						// coming from bottom
+
+						ball.dy = -ball.dy;
+					}
+					else
+					{
+						// hitting bottom left or bottom right corner
+
+						ball.dx /= 1.05;
+					}
 
 					ball.y = brick.y + brick.get_height();
 				}
 
-				sound.setBuffer(sound_buffer[BRICK_HIT_1]);
+				sound.setBuffer(sound_buffer[BRICK_HIT_2]);
 
 				sound.play();
 
