@@ -69,7 +69,7 @@ class level_maker
 					instead we check for the difference
 				*/
 
-				if (std::abs(xout - brick.x) < .1)
+				if (std::abs(xout - brick.x) < .001)
 				{
 					// left collision
 
@@ -78,7 +78,7 @@ class level_maker
 					ball.x = brick.x - ball.get_width();
 				}
 
-				if (std::abs(xout - brick.x - brick.get_width()) < .1)
+				if (std::abs(xout - brick.x - brick.get_width()) < .001)
 				{
 					// right collision
 
@@ -87,7 +87,7 @@ class level_maker
 					ball.x = brick.x + brick.get_width();
 				}
 
-				if (std::abs(yout - brick.y) < .1)
+				if (std::abs(yout - brick.y) < .001)
 				{
 					// top collision
 
@@ -96,7 +96,7 @@ class level_maker
 					ball.y = brick.y - ball.get_height();
 				}
 				
-				if (std::abs(yout - brick.y - brick.get_height()) < .1)
+				if (std::abs(yout - brick.y - brick.get_height()) < .001)
 				{
 					// bottom collision
 
