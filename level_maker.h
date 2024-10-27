@@ -1,5 +1,7 @@
 #pragma once
 
+#include"utility/collision.h"
+
 class level_maker
 {
 	std::vector<brick_class> brick_matrix;
@@ -64,42 +66,36 @@ class level_maker
 			{
 				// a brick is visible and collids with the ball
 
+				auto side = circle_aabb_collision_side(xout, yout, brick.x, brick.y, brick.get_width(), brick.get_height());
+
 				/*
 					as floating point numbers are not very precise we cannot check for equality
 					instead we check for the difference
 				*/
 
-				if (std::abs(xout - brick.x) < .001)
+				if (side.left)
 				{
-					// left collision
-
 					ball.dx = -ball.dx;
 
 					ball.x = brick.x - ball.get_width();
 				}
 
-				if (std::abs(xout - brick.x - brick.get_width()) < .001)
+				if (side.right)
 				{
-					// right collision
-
 					ball.dx = -ball.dx;
 
 					ball.x = brick.x + brick.get_width();
 				}
 
-				if (std::abs(yout - brick.y) < .001)
+				if (side.top)
 				{
-					// top collision
-
 					ball.dy = -ball.dy;
 
 					ball.y = brick.y - ball.get_height();
 				}
 				
-				if (std::abs(yout - brick.y - brick.get_height()) < .001)
+				if (side.bottom)
 				{
-					// bottom collision
-
 					ball.dy = -ball.dy;
 
 					ball.y = brick.y + brick.get_height();

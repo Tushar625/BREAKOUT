@@ -1,6 +1,6 @@
 #pragma once
 
-#include<cmath>
+#include"utility/collision.h"
 
 class ball_class
 {
@@ -52,33 +52,7 @@ public:
 
 	bool collids(double& xp, double& yp, double xb, double yb, int widthb, int heightb) const
 	{
-		auto radius = get_width() / 2.0;
-
-		sf::Vector2f aabb_half(widthb / 2.0f, heightb / 2.0f);
-
-		sf::Vector2f center((x + radius), (y + radius)); // center of the circle (ball)
-
-		sf::Vector2f box_center((xb + aabb_half.x), (yb + aabb_half.y)); // center of the box
-
-		auto delta = center - box_center;
-
-		delta.x = std::max(-aabb_half.x, std::min(delta.x, aabb_half.x));
-		
-		delta.y = std::max(-aabb_half.y, std::min(delta.y, aabb_half.y));
-
-		auto nearest_point = box_center + delta;	// point on the box
-
-		// nearest point on the serface of the box
-
-		xp = nearest_point.x;
-
-		yp = nearest_point.y;
-
-		delta = nearest_point - center; // distance between P and C
-
-		auto dist = sqrt(delta.x * delta.x + delta.y * delta.y);
-
-		return dist < radius;
+		return circle_aabb_collision(xp, yp, x, y, get_width() / 2.0, xb, yb, widthb, heightb);
 	}
 
 	void update(double dt)
