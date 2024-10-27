@@ -10,10 +10,6 @@ unsigned int set_antialiashing()
 	return 0;
 }
 
-// loading the game states into the state machine
-
-STATE_MACHINE game_state({ &initial, &play });
-
 inline bool Game::Create()
 {
 	// setting window title
@@ -42,7 +38,7 @@ inline bool Game::Create()
 
 	MY_GAME.set_fps(30);
 
-	game_state.change_to(INITIAL);
+	game_state.change_to(initial);
 
 	
 
@@ -57,7 +53,7 @@ inline bool Game::Update(double dt)
 {
 	// exit
 
-	if (INPUT.isClosed() || INPUT.isPressed(sf::Keyboard::Scan::Escape) || game_state.Update(dt) == EXIT)
+	if (INPUT.isClosed() || INPUT.isPressed(sf::Keyboard::Scan::Escape) || game_state.Update(dt) == EXIT_CODE)
 		return STOP_GAME_LOOP;
 
 	/*auto pos = INPUT.pointer();

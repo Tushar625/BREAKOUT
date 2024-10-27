@@ -15,6 +15,8 @@ std::vector<sf::SoundBuffer> sound_buffer{ SOUND_COUNT };
 
 sf::Music music;
 
+STATE_MACHINE game_state;
+
 
 
 

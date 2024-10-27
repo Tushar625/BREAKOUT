@@ -4,6 +4,8 @@
 
 #include<array>
 
+extern class play_state play;
+
 // creating the buttons
 
 class str_button : public BUTTON
@@ -45,7 +47,12 @@ class str_button : public BUTTON
 
 class initial_state : public BASE_STATE
 {
-	// a structure nicely encaptulate the data used in this state (to save space) locally
+	/*
+		this demonstrate how nicely we can allocate(during entry) and deallcate(during exit)
+		state data 
+	*/
+	
+	// a structure nicely encaptulate the data used in this state locally
 
 	struct data
 	{
@@ -139,12 +146,12 @@ class initial_state : public BASE_STATE
 
 		if (sel == 0)
 		{
-			return PLAY;
+			game_state.change_to(play);
 		}
 		
 		if (sel == 2)
 		{
-			return EXIT;
+			return EXIT_CODE;
 		}
 
 		return -1;
