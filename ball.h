@@ -1,7 +1,5 @@
 #pragma once
 
-#include"utility/collision.h"
-
 class ball_class
 {
 	sf::Sound snd;

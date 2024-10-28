@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include<array>
-
 extern class play_state play;
 
 // creating the buttons

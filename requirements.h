@@ -5,6 +5,8 @@
 
 #include"game.h"
 
+#include"utility/collision.h"
+
 #include<SFML/Audio.hpp>
 
 #include<iostream>	// only for debugging
@@ -12,6 +14,8 @@
 #include<string>
 
 #include<vector>
+
+#include<array>
 
 #include"constants.h"
 

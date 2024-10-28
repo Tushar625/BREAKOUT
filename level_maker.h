@@ -1,7 +1,5 @@
 #pragma once
 
-#include"utility/collision.h"
-
 class level_maker
 {
 	std::vector<brick_class> brick_matrix;
