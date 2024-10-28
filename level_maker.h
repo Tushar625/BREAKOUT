@@ -14,9 +14,9 @@ class level_maker
 	{
 		// no. of bricks row and column wise
 
-		int height = 3;
+		int height = 4;
 
-		int width = 6;
+		int width = 10;
 
 		// the matrix
 
@@ -26,7 +26,7 @@ class level_maker
 
 		int xout, yout;
 
-		to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 50, height * (brick_matrix[0].get_height() + 8), width * (brick_matrix[0].get_width() + 8), CENTER);
+		to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 50, height * (brick_matrix[0].get_height() + 4), width * (brick_matrix[0].get_width() + 4), CENTER);
 
 		// setting positions for each bricks
 		
@@ -36,14 +36,14 @@ class level_maker
 
 			for (int c = 0; c < width; c++)
 			{
-				brick_matrix[c + r * width].x = tempx + 4;
+				brick_matrix[c + r * width].x = tempx + 2;
 
-				brick_matrix[c + r * width].y = yout + 4;
+				brick_matrix[c + r * width].y = yout + 2;
 
-				tempx += 32 + 8;
+				tempx += 32 + 4;
 			}
 
-			yout += 16 + 8;
+			yout += 16 + 4;
 		}
 	}
 
