@@ -5,38 +5,38 @@
 
 // the value returned by this function will be set as the value for antialiashing
 
-unsigned int set_antialiashing()
+unsigned int bb::set_antialiashing()
 {
 	return 0;
 }
 
-inline bool Game::Create()
+inline bool bb::Game::Create()
 {
 	// setting window title
 
 
-	WINDOW.setTitle("Breakout prototype 3");
+	bb::WINDOW.setTitle("Breakout prototype 3");
 
 	
 	// setting window size
 
 
-	WINDOW.setSize(sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT));
+	bb::WINDOW.setSize(sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-	auto this_view = WINDOW.getView();
+	auto this_view = bb::WINDOW.getView();
 
 	this_view.reset(sf::FloatRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT));
 
-	WINDOW.setView(this_view);
+	bb::WINDOW.setView(this_view);
 
 
 	// other settings
 
-	WINDOW.setPosition(sf::Vector2i(100, 100));
+	bb::WINDOW.setPosition(sf::Vector2i(100, 100));
 	
 	srand(time(0));
 
-	MY_GAME.set_fps(30);
+	bb::MY_GAME.set_fps(30);
 
 	game_state.change_to(initial);
 
@@ -49,11 +49,11 @@ inline bool Game::Create()
 	return SUCCESS;
 }
 
-inline bool Game::Update(double dt)
+inline bool bb::Game::Update(double dt)
 {
 	// exit
 
-	if (INPUT.isClosed() || INPUT.isPressed(sf::Keyboard::Scan::Escape) || game_state.Update(dt) == EXIT_CODE)
+	if (bb::INPUT.isClosed() || bb::INPUT.isPressed(sf::Keyboard::Scan::Escape) || game_state.Update(dt) == EXIT_CODE)
 		return STOP_GAME_LOOP;
 
 	/*auto pos = INPUT.pointer();
@@ -66,7 +66,7 @@ inline bool Game::Update(double dt)
 	return !STOP_GAME_LOOP;
 }
 
-inline void Game::Render()
+inline void bb::Game::Render()
 {
 	sf::Sprite bg_sprite;
 
@@ -76,11 +76,11 @@ inline void Game::Render()
 
 	bg_sprite.setScale(sf::Vector2f(VIRTUAL_WIDTH / (float)(bg_size.x - 1), VIRTUAL_HEIGHT / (float)(bg_size.y - 1)));
 
-	WINDOW.draw(bg_sprite);
+	bb::WINDOW.draw(bg_sprite);
 
 	game_state.Render();
 
-	small_text.setString(std::to_string(static_cast<int>(MY_GAME.get_fps() + .5)));
+	small_text.setString(std::to_string(static_cast<int>(bb::MY_GAME.get_fps() + .5)));
 
-	WINDOW.draw(small_text);
+	bb::WINDOW.draw(small_text);
 }

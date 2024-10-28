@@ -42,6 +42,6 @@ public:
 
 		curr_brick.setPosition(sf::Vector2f(x, y));
 
-		WINDOW.draw(curr_brick);
+		bb::WINDOW.draw(curr_brick);
 	}
 };

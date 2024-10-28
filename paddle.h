@@ -27,14 +27,14 @@ class paddle_class
 	{
 		int dir = 0;
 
-		if (INPUT.isHeld(sf::Keyboard::Scan::Left))
+		if (bb::INPUT.isHeld(sf::Keyboard::Scan::Left))
 		{
 			x -= dx * dt;
 
 			dir = -1;
 		}
 
-		if (INPUT.isHeld(sf::Keyboard::Scan::Right))
+		if (bb::INPUT.isHeld(sf::Keyboard::Scan::Right))
 		{
 			x += dx * dt;
 
@@ -60,6 +60,6 @@ class paddle_class
 
 		curr_paddle.setPosition(sf::Vector2f(x, y));
 
-		WINDOW.draw(curr_paddle);
+		bb::WINDOW.draw(curr_paddle);
 	}
 } paddle;

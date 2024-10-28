@@ -103,6 +103,6 @@ public:
 	{
 		sprite[BALL][index].setPosition(sf::Vector2f(x, y));
 
-		WINDOW.draw(sprite[BALL][index]);
+		bb::WINDOW.draw(sprite[BALL][index]);
 	}
 } ball;

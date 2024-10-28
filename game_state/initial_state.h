@@ -14,14 +14,14 @@ class str_button : public BUTTON
 	{
 		button_text.setFillColor(sf::Color::White);
 
-		WINDOW.draw(button_text);
+		bb::WINDOW.draw(button_text);
 	}
 
 	void HOVERING_STATE() override
 	{
 		button_text.setFillColor(sf::Color::Cyan);
 
-		WINDOW.draw(button_text);
+		bb::WINDOW.draw(button_text);
 	}
 
 	public:
@@ -92,13 +92,13 @@ class initial_state : public BASE_STATE
 
 		medium_text.setPosition(sf::Vector2f(button.get_x() - medium_text.getLocalBounds().width - 20, button.get_y()));
 
-		WINDOW.draw(medium_text);
+		bb::WINDOW.draw(medium_text);
 
 		medium_text.setString("<<<");
 
 		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
 
-		WINDOW.draw(medium_text);
+		bb::WINDOW.draw(medium_text);
 	}
 
 	sf::Sound sound;
@@ -114,26 +114,26 @@ class initial_state : public BASE_STATE
 
 	int Update(double dt)
 	{
-		auto mpos = INPUT.pointer();
+		auto mpos = bb::INPUT.pointer();
 
 		auto sel = pdata->menu.Update(
 			mpos.x,
 			mpos.y,
-			INPUT.isPressedM(sf::Mouse::Left),
-			INPUT.isReleasedM(sf::Mouse::Left),
-			INPUT.isPressed(sf::Keyboard::Scan::Up),
-			INPUT.isPressed(sf::Keyboard::Scan::Down),
-			INPUT.isPressed(sf::Keyboard::Scan::Enter)
+			bb::INPUT.isPressedM(sf::Mouse::Left),
+			bb::INPUT.isReleasedM(sf::Mouse::Left),
+			bb::INPUT.isPressed(sf::Keyboard::Scan::Up),
+			bb::INPUT.isPressed(sf::Keyboard::Scan::Down),
+			bb::INPUT.isPressed(sf::Keyboard::Scan::Enter)
 		);
 
-		if (INPUT.isPressed(sf::Keyboard::Scan::Up) || INPUT.isPressed(sf::Keyboard::Scan::Down))
+		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Up) || bb::INPUT.isPressed(sf::Keyboard::Scan::Down))
 		{
 			sound.setBuffer(sound_buffer[SELECT]);
 
 			sound.play();
 		}
 
-		if ((INPUT.isReleasedM(sf::Mouse::Left) || INPUT.isPressed(sf::Keyboard::Scan::Enter)) && sel != -1) 
+		if ((bb::INPUT.isReleasedM(sf::Mouse::Left) || bb::INPUT.isPressed(sf::Keyboard::Scan::Enter)) && sel != -1)
 		{
 			sound.setBuffer(sound_buffer[CONFIRM]);
 
@@ -159,7 +159,7 @@ class initial_state : public BASE_STATE
 	{
 		pdata->menu.Render(initial_state::pointer);
 
-		WINDOW.draw(pdata->breakout);
+		bb::WINDOW.draw(pdata->breakout);
 	}
 
 	void Exit()
