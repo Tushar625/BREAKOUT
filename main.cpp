@@ -80,7 +80,7 @@ inline void Game::Render()
 
 	game_state.Render();
 
-	small_text.setString(std::to_string(MY_GAME.get_fps()));
+	small_text.setString(std::to_string(static_cast<int>(MY_GAME.get_fps() + .5)));
 
 	WINDOW.draw(small_text);
 }
