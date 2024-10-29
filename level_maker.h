@@ -26,7 +26,7 @@ class level_maker
 
 		int xout, yout;
 
-		to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 50, height * (brick_matrix[0].get_height() + 4), width * (brick_matrix[0].get_width() + 4), CENTER);
+		bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 50, height * (brick_matrix[0].get_height() + 4), width * (brick_matrix[0].get_width() + 4), bb::CENTER);
 
 		// setting positions for each bricks
 		
@@ -64,14 +64,12 @@ class level_maker
 			{
 				// a brick is visible and collids with the ball
 
-				auto side = circle_aabb_collision_side(xout, yout, brick.x, brick.y, brick.get_width(), brick.get_height());
-
 				/*
 					as floating point numbers are not very precise we cannot check for equality
 					instead we check for the difference
 				*/
 
-				if (side.left)
+				if (/*left*/bb::flx::relep_eq(xout, brick.x))
 				{
 					if (ball.dx > 0)
 					{
@@ -89,7 +87,7 @@ class level_maker
 					ball.x = brick.x - ball.get_width();
 				}
 
-				if (side.right)
+				if (/*right*/bb::flx::relep_eq(xout, brick.x + brick.get_width()))
 				{
 					if (ball.dx < 0)
 					{
@@ -107,7 +105,7 @@ class level_maker
 					ball.x = brick.x + brick.get_width();
 				}
 
-				if (side.top)
+				if (/*top*/bb::flx::relep_eq(yout, brick.y))
 				{
 					if (ball.dy > 0)
 					{
@@ -125,7 +123,7 @@ class level_maker
 					ball.y = brick.y - ball.get_height();
 				}
 				
-				if (side.bottom)
+				if (/*bottom*/bb::flx::relep_eq(yout, brick.y + brick.get_height()))
 				{
 					if (ball.dy < 0)
 					{

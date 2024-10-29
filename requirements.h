@@ -5,7 +5,9 @@
 
 #include"game.h"
 
-#include"utility/collision.h"
+#include"utility/collision_fun.h"
+
+#include"utility/float_fun.h"
 
 #include<SFML/Audio.hpp>
 

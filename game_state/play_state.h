@@ -1,6 +1,6 @@
 #pragma once
 
-class play_state : public BASE_STATE
+class play_state : public bb::BASE_STATE
 {
 	sf::Sound sound;
 

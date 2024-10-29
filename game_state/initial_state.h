@@ -6,7 +6,7 @@ extern class play_state play;
 
 // creating the buttons
 
-class str_button : public BUTTON
+class str_button : public bb::BUTTON
 {
 	sf::Text button_text;
 
@@ -36,14 +36,14 @@ class str_button : public BUTTON
 
 		set_width(button_text.getLocalBounds().width);
 
-		set_pos(xin, yin, BOTTOM_CENTER);
+		set_pos(xin, yin, bb::BOTTOM_CENTER);
 
 		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
 	}
 };
 
 
-class initial_state : public BASE_STATE
+class initial_state : public bb::BASE_STATE
 {
 	/*
 		this demonstrate how nicely we can allocate(during entry) and deallcate(during exit)
@@ -56,7 +56,7 @@ class initial_state : public BASE_STATE
 	{
 		std::array<str_button, 3> button_arr;
 
-		BUTTON_LIST menu;	// the menu to be displayed in this state
+		bb::BUTTON_LIST menu;	// the menu to be displayed in this state
 
 		sf::Text breakout;
 
@@ -74,7 +74,7 @@ class initial_state : public BASE_STATE
 
 			int xout, yout;
 
-			to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, CENTER);
+			bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, bb::CENTER);
 
 			breakout.setPosition(sf::Vector2f(xout, yout - 10));
 		}
@@ -82,7 +82,7 @@ class initial_state : public BASE_STATE
 
 	// pointer for menu as a static member function
 
-	static void pointer(BUTTON_LIST& menu)
+	static void pointer(bb::BUTTON_LIST& menu)
 	{
 		auto button = menu.get_mbutton<str_button>();
 
