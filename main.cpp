@@ -5,12 +5,16 @@
 
 #include"requirements.h"
 
+
+
 // the value returned by this function will be set as the value for antialiashing
 
 unsigned int bb::set_antialiashing()
 {
 	return 0;
 }
+
+
 
 inline bool bb::Game::Create()
 {
@@ -51,6 +55,8 @@ inline bool bb::Game::Create()
 	return SUCCESS;
 }
 
+
+
 inline bool bb::Game::Update(double dt)
 {
 	// exit
@@ -68,10 +74,14 @@ inline bool bb::Game::Update(double dt)
 	return !STOP_GAME_LOOP;
 }
 
+
+
 inline void bb::Game::Clear()
 {
 	bb::WINDOW.draw(bg_sprite);
 }
+
+
 
 inline void bb::Game::Render()
 {
