@@ -9,6 +9,8 @@ sf::Text small_text, medium_text, large_text;
 
 std::vector<sf::Texture> texture{ TEXTURE_COUNT };
 
+sf::Sprite bg_sprite;
+
 std::vector<std::vector<sf::Sprite>> sprite{ SPRITE_COUNT };
 
 std::vector<sf::SoundBuffer> sound_buffer{ SOUND_COUNT };
@@ -85,6 +87,8 @@ class ASSET_LOADER
 
 
 
+		bg_sprite = get_background_sprite(texture[BACKGROUND]);
+		
 		sprite[PADDLE] = get_paddle_sprites(texture[MAIN]);
 
 		sprite[BALL] = get_ball_sprites(texture[MAIN]);

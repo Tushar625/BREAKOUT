@@ -1,6 +1,8 @@
 
 #define SET_ANTIALIASHING	// this macro allows you to set antialiashing
 
+#define GAME_CLEAR
+
 #include"requirements.h"
 
 // the value returned by this function will be set as the value for antialiashing
@@ -66,18 +68,13 @@ inline bool bb::Game::Update(double dt)
 	return !STOP_GAME_LOOP;
 }
 
+inline void bb::Game::Clear()
+{
+	bb::WINDOW.draw(bg_sprite);
+}
+
 inline void bb::Game::Render()
 {
-	sf::Sprite bg_sprite;
-
-	bg_sprite.setTexture(texture[BACKGROUND]);
-
-	auto bg_size = texture[BACKGROUND].getSize();
-
-	bg_sprite.setScale(sf::Vector2f(VIRTUAL_WIDTH / (float)(bg_size.x - 1), VIRTUAL_HEIGHT / (float)(bg_size.y - 1)));
-
-	bb::WINDOW.draw(bg_sprite);
-
 	game_state.Render();
 
 	small_text.setString(std::to_string(static_cast<int>(bb::MY_GAME.get_fps() + .5)));

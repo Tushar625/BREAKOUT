@@ -2,7 +2,46 @@
 
 #pragma once
 
+
+
+// to hold general game data that will be used by every state
+
+struct game_data_type
+{
+	int level;
+
+	int highest_score;
+
+	int current_score;
+
+	int health;
+
+	game_data_type()
+	{
+		level = 1;
+
+		highest_score = 0;
+
+		current_score = 0;
+
+		health = MAX_HEALTH;
+	}
+
+	void reset()
+	{
+		level = 1;
+
+		current_score = 0;
+
+		health = MAX_HEALTH;
+	}
+};
+
+
+
 extern class play_state play;
+
+
 
 // creating the buttons
 
@@ -43,6 +82,7 @@ class str_button : public bb::BUTTON
 };
 
 
+
 class initial_state : public bb::BASE_STATE
 {
 	/*
@@ -50,6 +90,7 @@ class initial_state : public bb::BASE_STATE
 		state data 
 	*/
 	
+
 	// a structure nicely encaptulate the data used in this state locally
 
 	struct data
@@ -80,6 +121,7 @@ class initial_state : public bb::BASE_STATE
 		}
 	} *pdata;
 
+
 	// pointer for menu as a static member function
 
 	static void pointer(bb::BUTTON_LIST& menu)
@@ -101,7 +143,12 @@ class initial_state : public bb::BASE_STATE
 		bb::WINDOW.draw(medium_text);
 	}
 
+
 	sf::Sound sound;
+
+
+	game_data_type game_data;	// created to hold general game data
+
 
 	void Enter()
 	{
@@ -111,6 +158,7 @@ class initial_state : public bb::BASE_STATE
 
 		music.play();
 	}
+
 
 	int Update(double dt)
 	{
@@ -155,6 +203,7 @@ class initial_state : public bb::BASE_STATE
 		return -1;
 	}
 
+
 	void Render()
 	{
 		pdata->menu.Render(initial_state::pointer);
@@ -162,10 +211,12 @@ class initial_state : public bb::BASE_STATE
 		bb::WINDOW.draw(pdata->breakout);
 	}
 
+
 	void Exit()
 	{
 		delete pdata;	// delete the data of this state
 
 		music.stop();
 	}
+
 }initial;

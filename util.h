@@ -2,6 +2,19 @@
 
 // functions needed to load assests
 
+sf::Sprite get_background_sprite(const sf::Texture& texture)
+{
+	sf::Sprite bg_sprite;
+
+	bg_sprite.setTexture(texture);
+
+	auto bg_size = texture.getSize();
+
+	bg_sprite.setScale(sf::Vector2f(VIRTUAL_WIDTH / (float)(bg_size.x - 1), VIRTUAL_HEIGHT / (float)(bg_size.y - 1)));
+
+	return bg_sprite;
+}
+
 std::vector<sf::Sprite> get_paddle_sprites(const sf::Texture& texture)
 {
 	std::vector<sf::Sprite> paddles(16, sf::Sprite{ texture });
