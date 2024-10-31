@@ -1,0 +1,35 @@
+    ______________________________________
+   |______________________________________|
+   //                                   //|
+  //      Plan for Initial State       // /
+ //                                   // /
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
+|_____________________________________|/
+
+The home screen of this game.
+
+Data:
+
+	i_data { level, highest_score, score_till_last_level, health }
+
+	p_data { Play_button, Highest_Score_button, Quite_button, Breakout_text }
+
+Enter:
+
+	Create p_data
+
+Update:
+
+	p_data.Play_Button          -> Serve State, it receives, "pointer to i_data"
+
+	p_data.Highest_Score_Button -> Highest Score State, it receives, "i_data.highest_score"
+
+	p_data.Quite_Button         -> Stop Game
+
+Render:
+
+	Render p_data
+
+Exit:
+
+	Destroy p_data

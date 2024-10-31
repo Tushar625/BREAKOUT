@@ -1,0 +1,47 @@
+    ______________________________________
+   |______________________________________|
+   //                                   //|
+  //       Plan for Serve State        // /
+ //                                   // /
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
+|_____________________________________|/
+
+Ball sits on the middle of the paddle and is ready to serve.
+
+Data:
+
+	pointer to i_data received from initial state (not modified)
+
+	s_data { ball, paddle, bricks(vector), current_level_score }
+
+Enter:
+
+	set s_data.paddle in the middle
+
+	set s_data.ball dx, dy as 0 and put it on the middle of the s_data.paddle
+
+	if s_data.bricks is empty (starting a new level) generate bricks with Level_maker according to
+	i_data -> level
+
+Update:
+
+	Enter       -> Play State, it receives, "pointer to i_data" and "pointer to s_data"
+
+	Esc         -> Intial State
+
+	left        -> move paddle and ball towards left
+
+	right       -> move paddle and ball towards right
+
+Render:
+
+	Render
+		s_data.ball,
+		s_data.paddle,
+		s_data.bricks,
+		(s_data.current_level_score + i_data -> score_till_last_level) as score_till_last_level,
+		hearts according to i_data -> health
+
+Exit:
+
+	
