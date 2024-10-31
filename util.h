@@ -78,6 +78,8 @@ std::vector<sf::Sprite> get_brick_sprites(const sf::Texture& texture)
 
 	for (int i = 0; i < 3; i++)
 	{
+		x = 0;
+
 		for (int j = 0; j < 6; j++)
 		{
 			bricks[counter++].setTextureRect(sf::IntRect(x, y, 32, 16));
@@ -85,20 +87,18 @@ std::vector<sf::Sprite> get_brick_sprites(const sf::Texture& texture)
 			x += 32;
 		}
 
-		x = 0;
-
 		y += 16;
 	}
 
-	x = 0;
+	// collecting last three bricks
 
-	y += 16;
+	x = 0;
 
 	while (counter < 21)
 	{
 		bricks[counter++].setTextureRect(sf::IntRect(x, y, 32, 16));
 
-		x += 8;
+		x += 32;
 	}
 
 	return bricks;

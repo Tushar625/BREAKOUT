@@ -2,7 +2,7 @@
 
 class level_maker
 {
-	std::vector<brick_class> brick_matrix;
+	std::vector<brick_class> bricks;
 
 	sf::Sound sound;
 
@@ -10,51 +10,103 @@ class level_maker
 
 	public:
 
-	void set_level()
+	void set_level(int level = 5)
 	{
 		// no. of bricks row and column wise
 
-		int height = 4;
+		int height = 4 + (rand() % 5);	//  4 -> 8
 
-		int width = 10;
+		int width = 5 + 2 * (rand() % 4);	// odds 5 -> 11
+
+		// max color and tier
+		
+		int max_color = std::min(level, 4);		// increase 1 max_color per level
+
+		int max_tier = std::min(level / 3, 4);	// increase 1 max_tier per 3 levels
 
 		// the matrix
 
-		brick_matrix = std::vector<brick_class>{ static_cast<size_t>(height * width) };
+		bricks.reserve(static_cast<size_t>(height * width));	// reserve enough storage for all the bricks
 
 		// from center of the matrix we get the top left corners
 
 		int xout, yout;
 
-		bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 50, height * (brick_matrix[0].get_height() + 4), width * (brick_matrix[0].get_width() + 4), bb::CENTER);
+		bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 75, height * (/*bricks[0].get_height()*/ 16), width * (/*bricks[0].get_width()*/ 32), bb::CENTER);
 
 		// setting positions for each bricks
 		
-		for (int r = 0; r < height; r++)
+		do
 		{
-			int tempx = xout;
-
-			for (int c = 0; c < width; c++)
+			for (int r = 0; r < height; r++)
 			{
-				brick_matrix[c + r * width].x = tempx + 2;
+				if (!(rand() % 5))
+				{
+					// no row
 
-				brick_matrix[c + r * width].y = yout + 2;
+					yout += 16;
 
-				tempx += 32 + 4;
+					continue;
+				}
+
+
+				bool skip = rand() % 2;
+
+				bool alt = rand() % 2;
+
+				bool skip_front = skip ? rand() % 2 : 0;
+
+				bool alt_front = alt ? rand() % 2 : 0;
+
+				
+				int color = rand() % (max_color + 1);
+
+				int tier = rand() % (max_tier + 1);
+
+				int alt_color = alt ? (rand() % (max_color + 1)) : 0;
+
+				int alt_tier = skip ? (rand() % (max_tier + 1)) : 0;
+
+
+				int tempx = (skip_front) ? xout + 32 : xout;
+				
+				int col_inc = skip ? 2 : 1;
+
+				int x_inc = skip ? 64 : 32;
+
+				//std::cout << "\nr: " << r << " alt: " << alt << " skip: " << skip << " tempx: " << tempx << " color: " << color << " tier: " << tier << " alt_color: " << alt_color << " alt_tier: " << alt_tier;
+
+				for (int c = skip_front ? 1 : 0; c < width; c += col_inc)
+				{
+					if (alt)
+					{
+						bricks.push_back(brick_class(tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier)));
+
+						alt_front = !alt_front;
+					}
+					else
+					{
+						bricks.push_back(brick_class(tempx, yout, color, tier));
+					}
+
+					tempx += x_inc;
+				}
+
+				yout += 16;
 			}
+		} while (bricks.size() == 0);
 
-			yout += 16 + 4;
-		}
+		bricks.shrink_to_fit();
 	}
 
 	void clear_level()
 	{
-		brick_matrix = {};
+		bricks = {};
 	}
 
 	void update()
 	{
-		for (auto& brick : brick_matrix)
+		for (auto& brick : bricks)
 		{
 			// xout and yout gets the point of collision on the brick
 
@@ -152,7 +204,7 @@ class level_maker
 
 	void render()
 	{
-		for (auto& brick : brick_matrix)
+		for (auto& brick : bricks)
 		{
 			brick.render();
 		}

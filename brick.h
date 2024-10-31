@@ -13,6 +13,9 @@ public:
 	brick_class() : x(0), y(0), color(0), tier(0), invisible(false)
 	{}
 
+	brick_class(double xin, double yin, int color_in, int tier_in) : x(xin), y(yin), color(color_in), tier(tier_in), invisible(false)
+	{}
+
 	int get_width()
 	{
 		return 32;
