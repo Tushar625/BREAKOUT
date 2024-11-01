@@ -10,7 +10,7 @@ Main game play
 
 Data:
 
-	pointer to i_data received from initial state (read write access needed)
+	pointer to i_data received from serve state (read write access needed)
 
 	pointer to s_data received from serve state (read write access needed)
 
@@ -33,9 +33,41 @@ Update:
 	
 		reduce i_data -> health, go to        -> serve State
 
-		if i_data -> health is already 0      -> defeat state, it receives, "pointer to i_data" and "pointer to s_data"
+		if i_data -> health is already 0
+		
+			destroy s_data -> bricks
+		
+			total_score = (s_data -> current_level_score + i_data -> score_till_last_level)
 
-	If all bricks are destroyed go to         -> victory state, it receives, "pointer to i_data" and "pointer to s_data"
+			is_highest_score = (total_score > i_data -> highest_score)
+
+			// reset i_data
+
+			i_data -> score_till_last_level = 0;
+
+			i_data -> health = Max_health
+
+			i_data -> level = 0
+
+			goto                -> defeat state, it receives, "total_score" and "is_highest_score"
+
+	If all bricks are destroyed
+	
+		destroy s_data -> bricks
+		
+		total_score = (s_data -> current_level_score + i_data -> score_till_last_level)
+
+		is_highest_score = (total_score > i_data -> highest_score)
+
+		// update i_data
+		
+		add s_data -> current_level_score to i_data -> score_till_last_level
+
+		i_data -> health += 1
+
+		i_data -> level += 1
+		
+		go to                -> victory state, it receives, "total_score" and "is_highest_score"
 
 	Esc/P       -> Serve State
 

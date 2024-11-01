@@ -1,0 +1,33 @@
+    ______________________________________
+   |______________________________________|
+   //                                   //|
+  //       Plan for Victory State      // /
+ //                                   // /
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
+|_____________________________________|/
+
+After successfully completing a level i.e., all bricks are destroyed
+
+Data:
+
+	"total_score" and "is_highest_score" from play state
+
+	b_data { Next_level_button, Home_button, Victory_text(LEVEL UP!) }
+
+Enter:
+
+	Create b_data
+
+Update:
+
+	b_data -> Next_level_button    -> Serve State
+
+	b_data -> Home_button          -> initial state
+
+Render:
+
+	Render b_data along with other decorations as planned
+
+Exit:
+
+	Destroy b_data

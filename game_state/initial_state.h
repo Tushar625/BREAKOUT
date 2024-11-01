@@ -29,7 +29,7 @@ struct game_data_type
 
 	void reset()
 	{
-		level = 1;
+		level = 0;
 
 		current_score = 0;
 

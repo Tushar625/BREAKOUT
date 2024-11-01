@@ -74,9 +74,9 @@ class play_state : public bb::BASE_STATE
 	{
 		level.render();
 
-		paddle.render();
-
 		ball.render();
+
+		paddle.render();
 	}
 
 	void Exit()
