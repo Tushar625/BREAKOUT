@@ -50,7 +50,7 @@ public:
 
 	bool collids(double& xp, double& yp, double xb, double yb, int widthb, int heightb) const
 	{
-		return bb::circle_aabb_collision(xp, yp, x, y, get_width() / 2.0, xb, yb, widthb, heightb);
+		return bb::circle_aabb_collision(xp, yp, x + get_width() / 2.0, y + get_width() / 2.0, get_width() / 2.0, xb, yb, widthb, heightb);
 	}
 
 	void update(double dt)

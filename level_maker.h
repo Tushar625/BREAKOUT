@@ -10,7 +10,7 @@ class level_maker
 
 	public:
 
-	void set_level(int level = 5)
+	void set_level(int level = 0)
 	{
 		// no. of bricks row and column wise
 
@@ -32,7 +32,7 @@ class level_maker
 
 		int xout, yout;
 
-		bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 75, height * (/*bricks[0].get_height()*/ 16), width * (/*bricks[0].get_width()*/ 32), bb::CENTER);
+		bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, 70, height * (/*bricks[0].get_height()*/ 16), width * (/*bricks[0].get_width()*/ 32), bb::CENTER);
 
 		// setting positions for each bricks
 		
@@ -136,7 +136,9 @@ class level_maker
 						ball.dy /= 1.05;
 					}
 
-					ball.x = brick.x - ball.get_width();
+					//ball.x = brick.x - ball.get_width();
+
+					ball.x -= 5 + (ball.x - xout);
 				}
 
 				if (/*right*/bb::flx::relep_eq(xout, brick.x + brick.get_width()))
@@ -154,7 +156,9 @@ class level_maker
 						ball.dy /= 1.05;
 					}
 
-					ball.x = brick.x + brick.get_width();
+					//ball.x = brick.x + brick.get_width();
+
+					ball.x += 5 + (xout - ball.x);
 				}
 
 				if (/*top*/bb::flx::relep_eq(yout, brick.y))
@@ -172,7 +176,9 @@ class level_maker
 						ball.dx /= 1.05;
 					}
 
-					ball.y = brick.y - ball.get_height();
+					//ball.y = brick.y - ball.get_height();
+
+					ball.y -= 5 + (ball.y - yout);
 				}
 				
 				if (/*bottom*/bb::flx::relep_eq(yout, brick.y + brick.get_height()))
@@ -190,7 +196,9 @@ class level_maker
 						ball.dx /= 1.05;
 					}
 
-					ball.y = brick.y + brick.get_height();
+					//ball.y = brick.y + brick.get_height();
+
+					ball.y += 5 + (yout - ball.y);
 				}
 
 				sound.setBuffer(sound_buffer[BRICK_HIT_2]);

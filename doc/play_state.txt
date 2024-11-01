@@ -1,0 +1,58 @@
+    ______________________________________
+   |______________________________________|
+   //                                   //|
+  //        Plan for Play State        // /
+ //                                   // /
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
+|_____________________________________|/
+
+Main game play
+
+Data:
+
+	pointer to i_data received from initial state (read write access needed)
+
+	pointer to s_data received from serve state (read write access needed)
+
+Enter:
+
+	set s_data -> ball dx, dy to some random value
+
+Update:
+
+	Update position of the s_data -> ball
+
+	Detect if the s_data -> ball collids with a s_data -> brick or s_data -> paddle, do necessary things
+
+		For s_data -> brick destroy the s_data -> brick, update the s_data -> current_level_score, alter
+		direction s_data -> ball
+
+		For s_data -> paddle change the speed of the s_data -> ball
+
+	If s_data -> ball goes below the screen
+	
+		reduce i_data -> health, go to        -> serve State
+
+		if i_data -> health is already 0      -> defeat state, it receives, "pointer to i_data" and "pointer to s_data"
+
+	If all bricks are destroyed go to         -> victory state, it receives, "pointer to i_data" and "pointer to s_data"
+
+	Esc/P       -> Serve State
+
+	left        -> move s_data -> paddle towards left
+
+	right       -> move s_data -> paddle towards right
+
+Render:
+
+	Render
+		s_data -> ball,
+		s_data -> paddle,
+		s_data -> bricks,
+		(s_data -> current_level_score + i_data -> score_till_last_level) as score_till_last_level,
+		hearts according to i_data -> health
+		i_data -> level
+
+Exit:
+
+	

@@ -10,7 +10,7 @@ Ball sits on the middle of the paddle and is ready to serve.
 
 Data:
 
-	pointer to i_data received from initial state (not modified)
+	pointer to i_data received from initial state (read only access needed)
 
 	s_data { ball, paddle, bricks(vector), current_level_score }
 
@@ -21,7 +21,7 @@ Enter:
 	set s_data.ball dx, dy as 0 and put it on the middle of the s_data.paddle
 
 	if s_data.bricks is empty (starting a new level) generate bricks with Level_maker according to
-	i_data -> level
+	i_data -> level and set s_data.current_level_score = 0
 
 Update:
 
@@ -29,9 +29,9 @@ Update:
 
 	Esc         -> Intial State
 
-	left        -> move paddle and ball towards left
+	left        -> move s_data.paddle and s_data.ball towards left
 
-	right       -> move paddle and ball towards right
+	right       -> move s_data.paddle and s_data.ball towards right
 
 Render:
 
@@ -41,6 +41,7 @@ Render:
 		s_data.bricks,
 		(s_data.current_level_score + i_data -> score_till_last_level) as score_till_last_level,
 		hearts according to i_data -> health
+		i_data -> level
 
 Exit:
 
