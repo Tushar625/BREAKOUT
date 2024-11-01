@@ -29,58 +29,42 @@ class play_state : public bb::BASE_STATE
 
 		if (ball.collids(xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
 		{
+			auto side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
+
 			sound.setBuffer(sound_buffer[PADDLE_HIT]);
 
 			sound.play();
 
-			ball.dy = -std::abs(ball.dy);	// ball always goes up afer hitting the paddle
-
 			double amp = 35 + std::abs((ball.x + ball.get_width() / 2.0) - (paddle.x + paddle.get_width() / 2.0));
 
-			if (/*top*/bb::flx::relep_eq(yout, paddle.y))
+			// moving left and ball hits in the left
+
+			if (dir == -1 && (ball.x + ball.get_width() / 2.0) < (paddle.x + paddle.get_width() / 2.0))
 			{
-				// moving left and ball hits in the left
-
-				if (dir == -1 && (ball.x + ball.get_width() / 2.0) < (paddle.x + paddle.get_width() / 2.0))
-				{
-					ball.dx -= amp;
-				}
-
-				// moving right and ball hits in the right
-
-				if (dir == 1 && (ball.x + ball.get_width() / 2.0) > (paddle.x + paddle.get_width() / 2.0))
-				{
-					ball.dx += amp;
-				}
+				ball.dx -= amp;
 			}
-			else if (/*left*/bb::flx::relep_eq(xout, paddle.x))
-			{
-				if (dir == -1)
-				{
-					// paddle moving left
 
-					ball.dx = -std::abs(ball.dx - amp);
-				}
-				else
-				{
-					ball.dx = -(std::abs(ball.dx));
-				}
-			}
-			else if (/*right*/bb::flx::relep_eq(xout, paddle.x + paddle.get_width()))
-			{
-				if (dir == 1)
-				{
-					// paddle moving right
+			// moving right and ball hits in the right
 
-					ball.dx = std::abs(ball.dx + amp);
-				}
-				else
-				{
-					ball.dx = std::abs(ball.dx);
-				}
+			if (dir == 1 && (ball.x + ball.get_width() / 2.0) > (paddle.x + paddle.get_width() / 2.0))
+			{
+				ball.dx += amp;
 			}
 			
-			ball.y = paddle.y - ball.get_height(); // always place ball on top
+			if (side.left)
+			{
+				ball.dx = -(std::abs(ball.dx));	// always goes left
+			}
+			
+			if (side.right)
+			{
+				ball.dx = std::abs(ball.dx);	// always goes right
+			}
+
+			if (!side.bottom)
+			{
+				ball.dy = -ball.dy;	// always goes up if not bottom
+			}
 		}
 
 		return -1;

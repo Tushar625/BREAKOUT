@@ -121,7 +121,9 @@ class level_maker
 					instead we check for the difference
 				*/
 
-				if (/*left*/bb::flx::relep_eq(xout, brick.x))
+				auto side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, brick.x, brick.y, brick.get_width(), brick.get_height());
+
+				if (side.left)
 				{
 					if (ball.dx > 0)
 					{
@@ -135,13 +137,9 @@ class level_maker
 
 						ball.dy /= 1.05;
 					}
-
-					//ball.x = brick.x - ball.get_width();
-
-					ball.x -= 5 + (ball.x - xout);
 				}
 
-				if (/*right*/bb::flx::relep_eq(xout, brick.x + brick.get_width()))
+				if (side.right)
 				{
 					if (ball.dx < 0)
 					{
@@ -155,13 +153,9 @@ class level_maker
 
 						ball.dy /= 1.05;
 					}
-
-					//ball.x = brick.x + brick.get_width();
-
-					ball.x += 5 + (xout - ball.x);
 				}
 
-				if (/*top*/bb::flx::relep_eq(yout, brick.y))
+				if (side.top)
 				{
 					if (ball.dy > 0)
 					{
@@ -175,13 +169,9 @@ class level_maker
 
 						ball.dx /= 1.05;
 					}
-
-					//ball.y = brick.y - ball.get_height();
-
-					ball.y -= 5 + (ball.y - yout);
 				}
 				
-				if (/*bottom*/bb::flx::relep_eq(yout, brick.y + brick.get_height()))
+				if (side.bottom)
 				{
 					if (ball.dy < 0)
 					{
@@ -195,10 +185,6 @@ class level_maker
 
 						ball.dx /= 1.05;
 					}
-
-					//ball.y = brick.y + brick.get_height();
-
-					ball.y += 5 + (yout - ball.y);
 				}
 
 				sound.setBuffer(sound_buffer[BRICK_HIT_2]);
