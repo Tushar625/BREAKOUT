@@ -27,7 +27,9 @@ class play_state : public bb::BASE_STATE
 
 		double xout, yout;
 
-		if (ball.collids(xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
+		// paddle must not collide with a ball that is going up
+
+		if (ball.dy > 0 && ball.collids(xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
 		{
 			auto side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
 
@@ -35,22 +37,20 @@ class play_state : public bb::BASE_STATE
 
 			sound.play();
 
-			double amp = 35 + std::abs((ball.x + ball.get_width() / 2.0) - (paddle.x + paddle.get_width() / 2.0));
-
 			// moving left and ball hits in the left
 
 			if (dir == -1 && (ball.x + ball.get_width() / 2.0) < (paddle.x + paddle.get_width() / 2.0))
 			{
-				ball.dx -= amp;
+				ball.dx += -35 - ((paddle.x + paddle.get_width() / 2.0) - (ball.x + ball.get_width() / 2.0));
 			}
 
 			// moving right and ball hits in the right
 
 			if (dir == 1 && (ball.x + ball.get_width() / 2.0) > (paddle.x + paddle.get_width() / 2.0))
 			{
-				ball.dx += amp;
+				ball.dx += 35 + ((ball.x + ball.get_width() / 2.0) - (paddle.x + paddle.get_width() / 2.0));
 			}
-			
+
 			if (side.left)
 			{
 				ball.dx = -(std::abs(ball.dx));	// always goes left
