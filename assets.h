@@ -66,20 +66,15 @@ class ASSET_LOADER
 			std::cout << "can't load main\n";
 		}
 
-		if (!texture[ARROWS].loadFromFile("image/arrows.png"))
+		/*if (!texture[ARROWS].loadFromFile("image/arrows.png"))
 		{
 			std::cout << "can't load arrows\n";
-		}
-
-		if (!texture[HEARTS].loadFromFile("image/hearts.png"))
-		{
-			std::cout << "can't load hearts\n";
 		}
 
 		if (!texture[PARTICLE].loadFromFile("image/particle.png"))
 		{
 			std::cout << "can't load particles\n";
-		}
+		}*/
 
 
 
@@ -94,6 +89,8 @@ class ASSET_LOADER
 		sprite[BALL] = get_ball_sprites(texture[MAIN]);
 
 		sprite[BRICK] = get_brick_sprites(texture[MAIN]);
+
+		sprite[HEART] = get_heart_sprites(texture[MAIN]);
 
 
 

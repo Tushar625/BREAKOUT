@@ -4,8 +4,6 @@ class ball_class
 {
 	sf::Sound snd;
 
-	int width, height;
-
 public:
 
 	double x, y, dx, dy;
@@ -16,32 +14,28 @@ public:
 	{
 		x = y = dx = dy = 0;
 
-		width = height = 8;
-
 		index = 0;
 	}
 
 	int get_width() const
 	{
-		return width;
+		return 8;
 	}
 
 	int get_height() const
 	{
-		return height;
+		return 8;
 	}
 
-	void reset(int ball_type = 0)
+	void reset(double xin, double yin, int ball_type = 0)
 	{
 		dx = (100 + rand() % 51) * (rand() % 2 ? -1 : 1);
 		
 		dy = (100 + rand() % 51) * (rand() % 2 ? -1 : 1);
 
-		// place the ball on the paddle
-		
-		x = paddle.x + paddle.get_width() / 2.0;
-			
-		y = paddle.y - height - 1;
+		x = xin;
+
+		y = yin;
 
 		index = ball_type;
 	}
@@ -87,9 +81,9 @@ public:
 
 		// right collision
 
-		if (x + width > VIRTUAL_WIDTH)
+		if (x + get_width() > VIRTUAL_WIDTH)
 		{
-			x = VIRTUAL_WIDTH - width;
+			x = VIRTUAL_WIDTH - get_width();
 
 			dx = -dx;
 
@@ -105,4 +99,4 @@ public:
 
 		bb::WINDOW.draw(sprite[BALL][index]);
 	}
-} ball;
+};

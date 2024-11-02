@@ -103,3 +103,14 @@ std::vector<sf::Sprite> get_brick_sprites(const sf::Texture& texture)
 
 	return bricks;
 }
+
+std::vector<sf::Sprite> get_heart_sprites(const sf::Texture& texture)
+{
+	std::vector<sf::Sprite> hearts(2, sf::Sprite{ texture });
+
+	hearts[0].setTextureRect(sf::IntRect(128, 48, 10, 9));
+
+	hearts[1].setTextureRect(sf::IntRect(138, 48, 10, 9));
+
+	return hearts;
+}

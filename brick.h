@@ -4,17 +4,20 @@ class brick_class
 {
 	bool invisible;
 
+	sf::Sound sound;
+
 public:
 
 	double x, y;
 
-	int color, tier;
-
-	brick_class() : x(0), y(0), color(0), tier(0), invisible(false)
-	{}
+	int color, tier, score;
 
 	brick_class(double xin, double yin, int color_in, int tier_in) : x(xin), y(yin), color(color_in), tier(tier_in), invisible(false)
-	{}
+	{
+		// calculate the score while makin gthe brick
+
+		score = (color + 1) * 10 + tier * 5;
+	}
 
 	int get_width()
 	{
@@ -26,9 +29,28 @@ public:
 		return 16;
 	}
 
-	void hit()
+	// hit returns score and plays the sound
+
+	int hit()
 	{
-		invisible = true;
+		if(color == 0)
+		{
+			sound.setBuffer(sound_buffer[BRICK_HIT_2]);
+
+			sound.play();
+
+			invisible = true;
+
+			return score;
+		}
+		
+		sound.setBuffer(sound_buffer[BRICK_HIT_2]);
+
+		sound.play();
+
+		--color;
+
+		return 0;
 	}
 
 	bool is_visible()

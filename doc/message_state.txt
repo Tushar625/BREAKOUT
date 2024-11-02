@@ -10,13 +10,13 @@ After successfully completing a level i.e., all bricks are destroyed
 
 Data:
 
-	"total_score" and "is_highest_score" from play state
+	"total_score", "is_highest_score" and "victory" from play state
 
 	b_data { Next_level_button, Home_button, Victory_text(LEVEL UP!) }
 
 Enter:
 
-	Create b_data
+	Create b_data according to "is_highest_score" and "victory"
 
 Update:
 

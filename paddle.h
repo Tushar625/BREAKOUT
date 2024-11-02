@@ -2,7 +2,7 @@
 
 class paddle_class
 {
-	public:
+public:
 
 	double x, y, dx;
 
@@ -31,24 +31,28 @@ class paddle_class
 		{
 			x -= dx * dt;
 
-			dir = -1;
+			--dir;
 		}
 
 		if (bb::INPUT.isHeld(sf::Keyboard::Scan::Right))
 		{
 			x += dx * dt;
 
-			dir = 1;
+			++dir;
 		}
 
 		if (x < 0)
 		{
 			x = 0;
+
+			dir = 0;
 		}
 
 		if (x > VIRTUAL_WIDTH - (size + 1) * 32)
 		{
 			x = VIRTUAL_WIDTH - (size + 1) * 32;
+
+			dir = 0;
 		}
 
 		return dir;
@@ -62,4 +66,4 @@ class paddle_class
 
 		bb::WINDOW.draw(curr_paddle);
 	}
-} paddle;
+};

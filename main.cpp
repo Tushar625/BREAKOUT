@@ -1,4 +1,6 @@
 
+#define USE_MAIN WinMain
+
 #define SET_ANTIALIASHING	// this macro allows you to set antialiashing
 
 #define GAME_CLEAR
@@ -61,7 +63,7 @@ inline bool bb::Game::Update(double dt)
 {
 	// exit
 
-	if (bb::INPUT.isClosed() || bb::INPUT.isPressed(sf::Keyboard::Scan::Escape) || game_state.Update(dt) == EXIT_CODE)
+	if (bb::INPUT.isClosed() || game_state.Update(dt) == EXIT_CODE)
 		return STOP_GAME_LOOP;
 
 	/*auto pos = INPUT.pointer();

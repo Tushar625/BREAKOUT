@@ -4,82 +4,9 @@
 
 
 
-// to hold general game data that will be used by every state
+extern class serve_state serve;
 
-struct game_data_type
-{
-	int level;
-
-	int highest_score;
-
-	int current_score;
-
-	int health;
-
-	game_data_type()
-	{
-		level = 1;
-
-		highest_score = 0;
-
-		current_score = 0;
-
-		health = MAX_HEALTH;
-	}
-
-	void reset()
-	{
-		level = 0;
-
-		current_score = 0;
-
-		health = MAX_HEALTH;
-	}
-};
-
-
-
-extern class play_state play;
-
-
-
-// creating the buttons
-
-class str_button : public bb::BUTTON
-{
-	sf::Text button_text;
-
-	void ORDINARY_STATE() override
-	{
-		button_text.setFillColor(sf::Color::White);
-
-		bb::WINDOW.draw(button_text);
-	}
-
-	void HOVERING_STATE() override
-	{
-		button_text.setFillColor(sf::Color::Cyan);
-
-		bb::WINDOW.draw(button_text);
-	}
-
-	public:
-
-	str_button(int xin, int yin, std::string button_str)
-	{
-		button_text = medium_text;	// button text will have sam eproperties as medium text
-
-		button_text.setString(button_str);
-
-		set_height(MEDIUM_FONT_SIZE);
-
-		set_width(button_text.getLocalBounds().width);
-
-		set_pos(xin, yin, bb::BOTTOM_CENTER);
-
-		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
-	}
-};
+void set_serve_state(game_data_type* i_data);
 
 
 
@@ -119,40 +46,17 @@ class initial_state : public bb::BASE_STATE
 
 			breakout.setPosition(sf::Vector2f(xout, yout - 10));
 		}
-	} *pdata;
-
-
-	// pointer for menu as a static member function
-
-	static void pointer(bb::BUTTON_LIST& menu)
-	{
-		auto button = menu.get_mbutton<str_button>();
-
-		medium_text.setFillColor(sf::Color::Cyan);
-
-		medium_text.setString(">>>");
-
-		medium_text.setPosition(sf::Vector2f(button.get_x() - medium_text.getLocalBounds().width - 20, button.get_y()));
-
-		bb::WINDOW.draw(medium_text);
-
-		medium_text.setString("<<<");
-
-		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
-
-		bb::WINDOW.draw(medium_text);
-	}
+	} *b_data;
 
 
 	sf::Sound sound;
 
-
-	game_data_type game_data;	// created to hold general game data
+	game_data_type i_data;	// created to hold general game data
 
 
 	void Enter()
 	{
-		pdata = new data();	// creating the data used in this state
+		b_data = new data();	// creating the data used in this state
 
 		music.setLoop(true);
 
@@ -164,7 +68,7 @@ class initial_state : public bb::BASE_STATE
 	{
 		auto mpos = bb::INPUT.pointer();
 
-		auto sel = pdata->menu.Update(
+		auto sel = b_data->menu.Update(
 			mpos.x,
 			mpos.y,
 			bb::INPUT.isPressedM(sf::Mouse::Left),
@@ -192,7 +96,9 @@ class initial_state : public bb::BASE_STATE
 
 		if (sel == 0)
 		{
-			game_state.change_to(play);
+			set_serve_state(&i_data);	// sending data to serve state
+
+			game_state.change_to(serve);
 		}
 		
 		if (sel == 2)
@@ -206,15 +112,15 @@ class initial_state : public bb::BASE_STATE
 
 	void Render()
 	{
-		pdata->menu.Render(initial_state::pointer);
+		b_data->menu.Render(str_button::pointer);
 
-		bb::WINDOW.draw(pdata->breakout);
+		bb::WINDOW.draw(b_data->breakout);
 	}
 
 
 	void Exit()
 	{
-		delete pdata;	// delete the data of this state
+		delete b_data;	// delete the data of this state
 
 		music.stop();
 	}

@@ -16,11 +16,13 @@ Data:
 
 Enter:
 
-	set s_data -> ball dx, dy to some random value
-
 Update:
 
 	Update position of the s_data -> ball
+
+	left        -> move s_data -> paddle towards left
+
+	right       -> move s_data -> paddle towards right
 
 	Detect if the s_data -> ball collids with a s_data -> brick or s_data -> paddle, do necessary things
 
@@ -70,10 +72,6 @@ Update:
 		go to                -> victory state, it receives, "total_score" and "is_highest_score"
 
 	Esc/P       -> Serve State
-
-	left        -> move s_data -> paddle towards left
-
-	right       -> move s_data -> paddle towards right
 
 Render:
 

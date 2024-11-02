@@ -18,12 +18,14 @@ Enter:
 
 	set s_data.paddle in the middle
 
-	set s_data.ball dx, dy as 0 and put it on the middle of the s_data.paddle
+	set s_data.ball dx, dy to random values and put it on the middle of the s_data.paddle
 
 	if s_data.bricks is empty (starting a new level) generate bricks with Level_maker according to
 	i_data -> level and set s_data.current_level_score = 0
 
 Update:
+
+	don't update ball's position according to its dx and dy
 
 	Enter       -> Play State, it receives, "pointer to i_data" and "pointer to s_data"
 
