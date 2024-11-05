@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include"game.h"
+#include"BBS/game.h"
 
-#include"utility/collision_fun.h"
+#include"BBS/utility/collision_fun.h"
 
-#include"utility/float_fun.h"
+#include"BBS/utility/float_fun.h"
 
 #include<SFML/Audio.hpp>
 

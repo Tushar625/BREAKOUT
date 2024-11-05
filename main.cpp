@@ -1,11 +1,17 @@
 
+#ifdef NDEBUG
+
+// this is to create an windows application in release mode
+
 #define USE_MAIN WinMain
+
+#endif
 
 #define SET_ANTIALIASHING	// this macro allows you to set antialiashing
 
 #define GAME_CLEAR
 
-#include"requirements.h"
+#include"requirements/requirements.h"
 
 
 
