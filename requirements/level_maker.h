@@ -260,13 +260,13 @@ public:
 
 	void collision(ball_class& ball, int &score)
 	{
-		int i = 0;
-
-		for(auto ibrick {std::begin(bricks)}; ibrick < std::end(bricks);)
+		for(int i = 0; i < bricks_data.size();)
 		{
+			int ib = i * 6;
+
 			// xout and yout gets the point of collision on the brick
 
-			auto brick_x = ibrick->position.x, brick_y = ibrick->position.y;
+			auto brick_x = bricks[ib].position.x, brick_y = bricks[ib].position.y;
 
 			double xout, yout;
 
@@ -274,6 +274,12 @@ public:
 			{
 				// a brick is visible and collids with the ball
 
+				// play the sound
+
+				sound.setBuffer(sound_buffer[BRICK_HIT_2]);
+
+				sound.play();
+				
 				// setting explosion
 
 				//explo.create(sf::Vector2f(brick.x + brick.get_width() / 2.0, brick.y + brick.get_height() / 2.0));
@@ -357,7 +363,9 @@ public:
 
 					// destroy the brick and its data and don't update ibrick
 
-					bricks.erase(ibrick, ibrick + 6);
+					/*auto newIter = ibrick;*/
+
+					bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
 
 					bricks_data.erase(std::begin(bricks_data) + i);
 				}
@@ -367,24 +375,22 @@ public:
 
 					auto vertex = make_brick_vertex(brick_x, brick_y, --bricks_data[i].color, bricks_data[i].tier);
 
-					*(ibrick++) = vertex[0];
+					bricks[ib++] = vertex[0];
 
-					*(ibrick++) = vertex[1];
+					bricks[ib++] = vertex[1];
 
-					*(ibrick++) = vertex[2];
+					bricks[ib++] = vertex[2];
 
-					*(ibrick++) = vertex[3];
+					bricks[ib++] = vertex[3];
 
-					*(ibrick++) = vertex[4];
+					bricks[ib++] = vertex[4];
 
-					*(ibrick++) = vertex[5];
+					bricks[ib] = vertex[5];
 				}
 			}
 			else
 			{
 				// no collision
-
-				ibrick += 6;
 
 				++i;
 			}
@@ -442,8 +448,10 @@ private:
 
 	struct bricks_data_structure
 	{
-		int score, tier, color;
+		int score, color, tier;
 	};
 
 	std::vector<bricks_data_structure> bricks_data;
+
+	sf::Sound sound;
 };

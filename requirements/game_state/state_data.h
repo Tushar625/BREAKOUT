@@ -119,7 +119,7 @@ struct level_data_type
 
 	paddle_class paddle;
 
-	std::vector<brick_class> bricks;
+	BrickMap bricks;
 
 	int current_level_score;
 
@@ -127,7 +127,7 @@ struct level_data_type
 
 	void start_level(int level)
 	{
-		level_maker(level, bricks);
+		bricks.level_maker(level);
 
 		current_level_score = 0;
 	}
@@ -148,22 +148,11 @@ struct level_data_type
 
 	void render_bricks()
 	{
-		for (auto& brick : bricks)
-		{
-			brick.render();
-		}
+		bb::WINDOW.draw(bricks);
 	}
 
 	bool all_bricks_crushed()
 	{
-		for (auto& brick : bricks)
-		{
-			if(brick.is_visible())
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return bricks.empty();
 	}
 };
