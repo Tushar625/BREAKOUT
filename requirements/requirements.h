@@ -9,6 +9,8 @@
 
 #include"BBS/utility/float_fun.h"
 
+#include"BBS/system/particle_system/firecracker.h"
+
 #include<SFML/Audio.hpp>
 
 #include<iostream>	// only for debugging

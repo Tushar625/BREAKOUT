@@ -10,9 +10,11 @@ class str_button : public bb::BUTTON
 
 	void ORDINARY_STATE() override
 	{
-		button_text.setFillColor(sf::Color::White);
+		button_text.setFillColor(button_color);
 
 		bb::WINDOW.draw(button_text);
+
+		button_color = sf::Color::White;
 	}
 
 	void HOVERING_STATE() override
@@ -23,6 +25,8 @@ class str_button : public bb::BUTTON
 	}
 
 public:
+
+	sf::Color button_color;
 
 	str_button(int xin, int yin, std::string button_str)
 	{
@@ -37,13 +41,15 @@ public:
 		set_pos(xin, yin, bb::BOTTOM_CENTER);
 
 		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
+
+		button_color = sf::Color::White;
 	}
 
 	// pointer for menu as a static member function
 
 	static void pointer(bb::BUTTON_LIST& menu)
 	{
-		auto button = menu.get_mbutton<str_button>();
+		str_button& button = menu.get_mbutton<str_button>();
 
 		medium_text.setFillColor(sf::Color::Cyan);
 
@@ -58,6 +64,8 @@ public:
 		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
 
 		bb::WINDOW.draw(medium_text);
+
+		button.button_color = sf::Color::Cyan;
 	}
 };
 

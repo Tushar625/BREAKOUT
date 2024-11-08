@@ -21,14 +21,22 @@ class play_state : public bb::BASE_STATE
 
 	sf::Sound sound;
 
+	bb::Firecracker explo;
+
 	void Enter()
 	{}
 
 	int Update(double dt)
-	{	
+	{
 		auto& ball = s_data->ball;
 
 		auto& paddle = s_data->paddle;
+
+		//===================
+		// firecracker effect
+		//===================
+
+		explo.update(dt);
 
 		//================================
 		// detecting collision with bricks
@@ -43,6 +51,10 @@ class play_state : public bb::BASE_STATE
 			if (brick.is_visible() && ball.collids(xout, yout, brick.x, brick.y, brick.get_width(), brick.get_height()))
 			{
 				// a brick is visible and collids with the ball
+
+				// setting explosion
+
+				explo.create(sf::Vector2f(brick.x + brick.get_width() / 2.0, brick.y + brick.get_height() / 2.0));
 
 				/*
 					as floating point numbers are not very precise we cannot check for equality
@@ -243,7 +255,9 @@ class play_state : public bb::BASE_STATE
 
 	void Render()
 	{
-		// score hearts and level
+		// firecracker, score hearts and level
+
+		bb::WINDOW.draw(explo);
 
 		msg.setString("Score: " + std::to_string(i_data->score_till_last_level + s_data->current_level_score));
 
