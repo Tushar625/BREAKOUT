@@ -33,9 +33,7 @@
 
 #include"ball.h"
 
-#include"brick.h"
-
-#include"level_maker.h"
+#include"brickmap.h"
 
 #include"health.h"
 
