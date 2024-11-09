@@ -21,8 +21,6 @@ class play_state : public bb::BASE_STATE
 
 	sf::Sound sound;
 
-	bb::Firecracker explo;
-
 	void Enter()
 	{}
 
@@ -36,13 +34,13 @@ class play_state : public bb::BASE_STATE
 		// firecracker effect
 		//===================
 
-		explo.update(dt);
+		s_data -> explo.update(dt);
 
 		//================================
-		// detecting collision with bricks
+		// detecting and resolving collision with bricks
 		//================================
 
-		s_data->bricks.collision(s_data->ball, s_data->current_level_score);
+		s_data->bricks.collision(s_data->ball, s_data->current_level_score, s_data->explo);
 
 		//================================
 		// update ball and paddle position
@@ -98,11 +96,11 @@ class play_state : public bb::BASE_STATE
 			}
 		}
 
-		//===========================
-		// ball goes below the screen
-		//===========================
+		//==========================================================
+		// ball goes below the screen before all bricks are finished
+		//==========================================================
 
-		if (ball.y > VIRTUAL_HEIGHT)
+		if (!s_data->bricks.empty() && ball.y > VIRTUAL_HEIGHT)
 		{
 			if (i_data->health > 0)
 			{
@@ -132,7 +130,7 @@ class play_state : public bb::BASE_STATE
 		//all bricks are crushed
 		//======================
 
-		if (s_data->all_bricks_crushed())
+		if (s_data->all_bricks_explosions_left())
 		{
 			// victory
 
@@ -170,8 +168,6 @@ class play_state : public bb::BASE_STATE
 	{
 		// firecracker, score hearts and level
 
-		bb::WINDOW.draw(explo);
-
 		msg.setString("Score: " + std::to_string(i_data->score_till_last_level + s_data->current_level_score));
 
 		msg.setPosition(sf::Vector2f(VIRTUAL_WIDTH / 2.0 - VIRTUAL_WIDTH / 3.0, 0));
@@ -192,7 +188,7 @@ class play_state : public bb::BASE_STATE
 
 		s_data->paddle.render();
 
-		s_data->render_bricks();
+		s_data->render_bricks_explosions();
 	}
 
 	/*void Exit()

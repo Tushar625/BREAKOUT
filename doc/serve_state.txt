@@ -12,7 +12,7 @@ Data:
 
 	pointer to i_data received from initial state (read only access needed)
 
-	s_data { ball, paddle, bricks(vector), current_level_score }
+	s_data { ball, paddle, bricks(BrickMap), explo(bb::Firecracker), current_level_score }
 
 Enter:
 
@@ -24,6 +24,8 @@ Enter:
 	i_data -> level and set s_data.current_level_score = 0
 
 Update:
+
+	upgrade explo
 
 	don't update ball's position according to its dx and dy
 
@@ -41,6 +43,7 @@ Render:
 		s_data.ball,
 		s_data.paddle,
 		s_data.bricks,
+		s_data.explo,
 		(s_data.current_level_score + i_data -> score_till_last_level) as score_till_last_level,
 		hearts according to i_data -> health
 		i_data -> level

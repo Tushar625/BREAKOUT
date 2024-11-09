@@ -52,6 +52,8 @@ class serve_state : public bb::BASE_STATE
 
 	int Update(double dt)
 	{
+		s_data.explo.update(dt);
+
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Enter))
 		{
 			set_play_state(i_data, &s_data);
@@ -100,7 +102,7 @@ class serve_state : public bb::BASE_STATE
 
 		s_data.paddle.render();
 
-		s_data.render_bricks();
+		s_data.render_bricks_explosions();
 	}
 
 }serve;

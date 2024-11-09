@@ -121,6 +121,8 @@ struct level_data_type
 
 	BrickMap bricks;
 
+	bb::Firecracker explo;
+
 	int current_level_score;
 
 	// sets a new level
@@ -146,13 +148,15 @@ struct level_data_type
 
 	// render the bricks in this level
 
-	void render_bricks()
+	void render_bricks_explosions()
 	{
+		bb::WINDOW.draw(explo);
+
 		bb::WINDOW.draw(bricks);
 	}
 
-	bool all_bricks_crushed()
+	bool all_bricks_explosions_left()
 	{
-		return bricks.empty();
+		return bricks.empty() && explo.empty();
 	}
 };

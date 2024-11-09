@@ -18,20 +18,22 @@ Enter:
 
 Update:
 
+	Update s_data -> explo, the explosive particle system
+
 	Update position of the s_data -> ball
 
 	left        -> move s_data -> paddle towards left
 
 	right       -> move s_data -> paddle towards right
 
-	Detect if the s_data -> ball collids with a s_data -> brick or s_data -> paddle, do necessary things
+	Detect if the s_data -> ball collids with a s_data -> bricks or s_data -> paddle, do necessary things
 
-		For s_data -> brick destroy the s_data -> brick, update the s_data -> current_level_score, alter
-		direction s_data -> ball
+		For s_data -> bricks destroy the brick, create a new explosion with s_data -> explo, update the
+		s_data -> current_level_score, alter .direction s_data -> ball
 
 		For s_data -> paddle change the speed of the s_data -> ball
 
-	If s_data -> ball goes below the screen
+	If s_data -> ball goes below the screen before all the bricks are finished
 	
 		reduce i_data -> health, go to        -> serve State
 
@@ -53,7 +55,7 @@ Update:
 
 			goto                -> defeat state, it receives, "total_score" and "is_highest_score"
 
-	If all bricks are destroyed
+	If all bricks are destroyed and all the remaining explosions are over
 	
 		destroy s_data -> bricks
 		
@@ -79,6 +81,7 @@ Render:
 		s_data -> ball,
 		s_data -> paddle,
 		s_data -> bricks,
+		s_data -> explo,
 		(s_data -> current_level_score + i_data -> score_till_last_level) as score_till_last_level,
 		hearts according to i_data -> health
 		i_data -> level

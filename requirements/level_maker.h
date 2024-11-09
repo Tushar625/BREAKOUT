@@ -203,7 +203,7 @@ public:
 				{
 					if (alt)
 					{
-						auto vertex = make_brick_vertex(tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier));
+						const std::vector<sf::Vertex>& vertex = make_brick_vertex(tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier));
 
 						bricks.push_back(vertex[0]);
 
@@ -225,7 +225,7 @@ public:
 					}
 					else
 					{
-						auto vertex = make_brick_vertex(tempx, yout, color, tier);
+						const std::vector<sf::Vertex>& vertex = make_brick_vertex(tempx, yout, color, tier);
 
 						bricks.push_back(vertex[0]);
 
@@ -258,7 +258,7 @@ public:
 		bricks_data.shrink_to_fit();
 	}
 
-	void collision(ball_class& ball, int &score)
+	void collision(ball_class& ball, int &score, bb::Firecracker& explo)
 	{
 		for(int i = 0; i < bricks_data.size();)
 		{
@@ -282,7 +282,7 @@ public:
 				
 				// setting explosion
 
-				//explo.create(sf::Vector2f(brick.x + brick.get_width() / 2.0, brick.y + brick.get_height() / 2.0));
+				explo.create(sf::Vector2f(brick_x + m_brickW / 2.0, brick_y + m_brickH / 2.0), BRICK_COLOR[bricks_data[i].color], 2000);
 
 				/*
 					as floating point numbers are not very precise we cannot check for equality
@@ -359,11 +359,11 @@ public:
 
 				if (bricks_data[i].color == 0)
 				{
-					score += bricks_data[i].score;	// updating the brick after collision, playing sound and returning score
+					// updating score
 
-					// destroy the brick and its data and don't update ibrick
+					score += bricks_data[i].score;
 
-					/*auto newIter = ibrick;*/
+					// destroy the brick and its data
 
 					bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
 
@@ -373,7 +373,7 @@ public:
 				{
 					// upgrade the brick
 
-					auto vertex = make_brick_vertex(brick_x, brick_y, --bricks_data[i].color, bricks_data[i].tier);
+					const std::vector<sf::Vertex>& vertex = make_brick_vertex(brick_x, brick_y, --bricks_data[i].color, bricks_data[i].tier);
 
 					bricks[ib++] = vertex[0];
 
