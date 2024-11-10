@@ -1,7 +1,7 @@
     ______________________________________
    |______________________________________|
    //                                   //|
-  //       Plan for Victory State      // /
+  //       Plan for Message State      // /
  //                                   // /
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
 |_____________________________________|/
@@ -10,23 +10,29 @@ After successfully completing a level i.e., all bricks are destroyed
 
 Data:
 
-	"total_score", "is_highest_score" and "victory" from play state
+	"main_message", "complimentary_message", "next_button_text", "score" from play state
 
-	b_data { Next_level_button, Home_button, Victory_text(LEVEL UP!) }
+	b_data { Next_button, Home_button, main_message_text, complimentary_message_text, score_text }
 
 Enter:
 
-	Create b_data according to "is_highest_score" and "victory"
+	Create b_data according to "main_message", "complimentary_message", "next_button_text", "score"
+
+	Empty "main_message"
+	
+	Empty "complimentary_message"
+
+	Empty "next_button_text"
 
 Update:
 
-	b_data -> Next_level_button    -> Serve State
+	b_data -> Next_button       -> Serve State
 
-	b_data -> Home_button          -> initial state
+	b_data -> Home_button       -> initial state
 
 Render:
 
-	Render b_data along with other decorations as planned
+	Render b_data
 
 Exit:
 

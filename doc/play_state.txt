@@ -33,45 +33,71 @@ Update:
 
 		For s_data -> paddle change the speed of the s_data -> ball
 
-	If s_data -> ball goes below the screen before all the bricks are finished
+	If s_data -> ball goes below the screen "before" all the bricks are finished
 	
 		reduce i_data -> health, go to        -> serve State
 
 		if i_data -> health is already 0
+
+			// defeat
 		
 			destroy s_data -> bricks
-		
-			total_score = (s_data -> current_level_score + i_data -> score_till_last_level)
 
-			is_highest_score = (total_score > i_data -> highest_score)
+			// prepare state data
+
+			main_message = "GAME OVER"
+
+			next_button_text = "NEW GAME"
+		
+			score = (s_data -> current_level_score + i_data -> score_till_last_level)
+
+			if(score > i_data -> highest_score)
+
+				complimentary_message = "NEW RECORD"
+
+			else
+
+				complimentary_message = "HIGHEST: {i_data -> highest_score}"
 
 			// reset i_data
 
-			i_data -> score_till_last_level = 0;
+			if(score > i_data -> highest_score)
+
+				i_data -> highest_score = score
+
+			i_data -> score_till_last_level = 0
 
 			i_data -> health = Max_health
 
 			i_data -> level = 0
 
-			goto                -> defeat state, it receives, "total_score" and "is_highest_score"
+			go to                -> message state, it receives, main_message, complementary_message, next_button_text, score
 
 	If all bricks are destroyed and all the remaining explosions are over
+
+		// victory
 	
 		destroy s_data -> bricks
-		
-		total_score = (s_data -> current_level_score + i_data -> score_till_last_level)
-
-		is_highest_score = (total_score > i_data -> highest_score)
 
 		// update i_data
-		
-		add s_data -> current_level_score to i_data -> score_till_last_level
+
+		i_data -> score_till_last_level += s_data -> current_level_score
 
 		i_data -> health += 1
 
 		i_data -> level += 1
+
+		// prepare data to send to message state
+
+		main_message = "LEVEL UP!"
+
+		complimentary_message = "HEALTH++"
+
+		next_button_text = "LEVEL {i_data -> level}"
+
+		score = i_data -> score_till_last_level
 		
-		go to                -> victory state, it receives, "total_score" and "is_highest_score"
+		go to                 -> message state, it receives, main_message, complementary_message, next_button_text, score
 
 	Esc/P       -> Serve State
 

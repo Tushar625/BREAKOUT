@@ -1,5 +1,9 @@
 #pragma once
 
+extern class message_state message;
+
+void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score);
+
 class play_state : public bb::BASE_STATE
 {
 	public:
@@ -13,11 +17,23 @@ class play_state : public bb::BASE_STATE
 		msg = small_text;
 
 		msg.setFillColor(sf::Color::Cyan);
+
+		instructions = small_text;
+
+		instructions.setString("Pause (ESC, P)");
+
+		instructions.setPosition(sf::Vector2f(VIRTUAL_WIDTH / 2.0 - instructions.getLocalBounds().width / 2, VIRTUAL_HEIGHT - 80));
+
+		sf::Color cyan = sf::Color::Cyan;
+
+		cyan.a = 100;
+
+		instructions.setFillColor(cyan);
 	}
 
 	private:
 
-	sf::Text msg;
+	sf::Text msg, instructions;
 
 	sf::Sound sound;
 
@@ -102,9 +118,13 @@ class play_state : public bb::BASE_STATE
 
 		if (!s_data->bricks.empty() && ball.y > VIRTUAL_HEIGHT)
 		{
+			sound.setBuffer(sound_buffer[HURT]);
+
+			sound.play();
+
 			if (i_data->health > 0)
 			{
-				i_data->health--;
+				--i_data->health;
 
 				game_state.change_to(serve);
 			}
@@ -114,13 +134,23 @@ class play_state : public bb::BASE_STATE
 
 				s_data->end_level();
 
-				int total_score = (s_data->current_level_score + i_data->score_till_last_level);
+				// prepare next state data
 
-				bool is_highest_score = (total_score > i_data->highest_score);
+				std::string main_message = "GAME OVER";
 
-				i_data->reset();
+				std::string next_button_text = "RESET";
 
-				game_state.change_to(initial);
+				int score = (s_data->current_level_score + i_data->score_till_last_level);
+
+				std::string complimentary_message = (score > i_data->highest_score) ? "NEW RECORD" : ("HIGHEST: " + std::to_string(i_data->highest_score));
+
+				// reset i_data
+
+				i_data->reset(s_data->current_level_score);
+
+				set_message_state(main_message, complimentary_message, next_button_text, score);
+
+				game_state.change_to(message);
 			}
 
 			return -1;
@@ -134,20 +164,29 @@ class play_state : public bb::BASE_STATE
 		{
 			// victory
 
+			sound.setBuffer(sound_buffer[VICTORY]);
+
+			sound.play();
+
 			s_data->end_level();
 
-			int total_score = (s_data->current_level_score + i_data->score_till_last_level);
+			// update i_data
 
-			bool is_highest_score = (total_score > i_data->highest_score);
+			i_data->next_level(s_data->current_level_score);
 
-			i_data->score_till_last_level += s_data->current_level_score;
+			// prepare data to send to message state
 
-			if (i_data->health < MAX_HEALTH)
-				++(i_data->health);
+			std::string main_message = "LEVEL UP!";
 
-			++(i_data->level);
+			std::string complimentary_message = "HEALTH +1";
 
-			game_state.change_to(serve);
+			std::string next_button_text = "LEVEL " + std::to_string(i_data->level);
+
+			int score = i_data->score_till_last_level;
+
+			set_message_state(main_message, complimentary_message, next_button_text, score);
+
+			game_state.change_to(message);
 
 			return -1;
 		}
@@ -158,6 +197,10 @@ class play_state : public bb::BASE_STATE
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Escape) || bb::INPUT.isPressed(sf::Keyboard::Scan::P))
 		{
+			sound.setBuffer(sound_buffer[PAUSE]);
+
+			sound.play();
+
 			game_state.change_to(serve);
 		}
 
@@ -166,6 +209,8 @@ class play_state : public bb::BASE_STATE
 
 	void Render()
 	{
+		bb::WINDOW.draw(instructions);
+
 		// firecracker, score hearts and level
 
 		msg.setString("Score: " + std::to_string(i_data->score_till_last_level + s_data->current_level_score));

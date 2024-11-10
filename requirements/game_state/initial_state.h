@@ -10,6 +10,12 @@ void set_serve_state(game_data_type* i_data);
 
 
 
+extern class highest_score_state highest_score;
+
+void set_highest_score_state(int score);
+
+
+
 class initial_state : public bb::BASE_STATE
 {
 	/*
@@ -99,6 +105,13 @@ class initial_state : public bb::BASE_STATE
 			set_serve_state(&i_data);	// sending data to serve state
 
 			game_state.change_to(serve);
+		}
+
+		if (sel == 1)
+		{
+			set_highest_score_state(i_data.highest_score);	// sending data to serve state
+
+			game_state.change_to(highest_score);
 		}
 		
 		if (sel == 2)

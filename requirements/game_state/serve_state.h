@@ -19,13 +19,27 @@ class serve_state : public bb::BASE_STATE
 		msg = small_text;
 
 		msg.setFillColor(sf::Color::Cyan);
+
+		instructions = small_text;
+		
+		instructions.setString("Home (ESC) Start (ENTER)");
+
+		instructions.setPosition(sf::Vector2f(VIRTUAL_WIDTH / 2.0 - instructions.getLocalBounds().width / 2, VIRTUAL_HEIGHT - 80));
+
+		sf::Color cyan = sf::Color::Cyan;
+
+		cyan.a = 100;
+
+		instructions.setFillColor(cyan);
 	}
 
 	private:
 
 	level_data_type s_data;
 
-	sf::Text msg;
+	sf::Text msg, instructions;
+
+	sf::Sound sound;
 
 	void Enter()
 	{
@@ -56,6 +70,10 @@ class serve_state : public bb::BASE_STATE
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Enter))
 		{
+			sound.setBuffer(sound_buffer[PADDLE_HIT]);
+
+			sound.play();
+
 			set_play_state(i_data, &s_data);
 
 			game_state.change_to(play);
@@ -63,6 +81,10 @@ class serve_state : public bb::BASE_STATE
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
 		{
+			sound.setBuffer(sound_buffer[PAUSE]);
+
+			sound.play();
+
 			game_state.change_to(initial);
 		}
 
@@ -103,6 +125,10 @@ class serve_state : public bb::BASE_STATE
 		s_data.paddle.render();
 
 		s_data.render_bricks_explosions();
+
+		// instructions
+
+		bb::WINDOW.draw(instructions);
 	}
 
 }serve;

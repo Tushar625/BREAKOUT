@@ -10,6 +10,8 @@ class str_button : public bb::BUTTON
 
 	void ORDINARY_STATE() override
 	{
+		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
+
 		button_text.setFillColor(button_color);
 
 		bb::WINDOW.draw(button_text);
@@ -19,6 +21,8 @@ class str_button : public bb::BUTTON
 
 	void HOVERING_STATE() override
 	{
+		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
+
 		button_text.setFillColor(sf::Color::Cyan);
 
 		bb::WINDOW.draw(button_text);
@@ -39,8 +43,6 @@ public:
 		set_width(button_text.getLocalBounds().width);
 
 		set_pos(xin, yin, bb::BOTTOM_CENTER);
-
-		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
 
 		button_color = sf::Color::White;
 	}
@@ -64,6 +66,25 @@ public:
 		medium_text.setPosition(sf::Vector2f(button.get_x() + button.get_width() + 20, button.get_y()));
 
 		bb::WINDOW.draw(medium_text);
+
+		button.button_color = sf::Color::Cyan;
+	}
+
+	static void box(bb::BUTTON_LIST& menu)
+	{
+		str_button& button = menu.get_mbutton<str_button>();
+
+		sf::RectangleShape box(sf::Vector2f(button.get_width() + 12, button.get_height() + 6));
+
+		box.setPosition(sf::Vector2f(button.get_x() - 6, button.get_y()));
+
+		box.setOutlineThickness(1);
+
+		box.setOutlineColor(sf::Color::Cyan);
+
+		box.setFillColor(sf::Color::Transparent);
+
+		bb::WINDOW.draw(box);
 
 		button.button_color = sf::Color::Cyan;
 	}
@@ -101,13 +122,40 @@ struct game_data_type
 		// load this data back into a file
 	}
 
-	void reset()
+	void reset(int current_level_score)
 	{
+		int score = score_till_last_level + current_level_score;
+
 		level = 0;
 
 		score_till_last_level = 0;
 
 		health = MAX_HEALTH;
+
+		if (score > highest_score)
+		{
+			// new highest score
+
+			sf::Sound sound;
+
+			sound.setBuffer(sound_buffer[HIGH_SCORE]);
+
+			sound.play();
+
+			highest_score = score;
+		}
+	}
+
+	void next_level(int current_level_score)
+	{
+		level += 1;
+
+		score_till_last_level += current_level_score;
+
+		if (health < MAX_HEALTH)
+		{
+			health += 1;
+		}
 	}
 };
 
