@@ -106,20 +106,40 @@ struct game_data_type
 
 	game_data_type()
 	{
-		// try to load these data from a file
+		FILE* fp = NULL;
 
-		level = 0;
+		fp = fopen("breakout", "rb");
 
-		highest_score = 0;
+		if (fp == NULL || fread(this, sizeof(game_data_type), 1, fp) != 1)
+		{
+			// file not found or corrupted
 
-		score_till_last_level = 0;
+			level = 0;
 
-		health = MAX_HEALTH;
+			highest_score = 0;
+
+			score_till_last_level = 0;
+
+			health = MAX_HEALTH;
+		}
+
+		if(fp)
+		{
+			fclose(fp);
+		}
 	}
 
 	~game_data_type()
 	{
 		// load this data back into a file
+
+		FILE* fp = NULL;
+
+		fp = fopen("breakout", "wb");
+
+		fwrite(this, sizeof(game_data_type), 1, fp);
+
+		fclose(fp);
 	}
 
 	void reset(int current_level_score)

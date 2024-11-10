@@ -23,7 +23,7 @@ inline bool bb::Game::Create()
 	// setting window title
 
 
-	bb::WINDOW.setTitle("Breakout prototype 3");
+	bb::WINDOW.setTitle("Breakout 10.11.24");
 
 	
 	// setting window size
