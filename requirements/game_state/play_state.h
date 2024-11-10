@@ -64,7 +64,7 @@ class play_state : public bb::BASE_STATE
 
 		s_data->ball.update(dt);
 
-		auto dir = paddle.update(dt);
+		int dir = paddle.update(dt);
 
 		//================================
 		// detecting collision with paddle
@@ -116,7 +116,7 @@ class play_state : public bb::BASE_STATE
 		// ball goes below the screen before all bricks are finished
 		//==========================================================
 
-		if (!s_data->bricks.empty() && ball.y > VIRTUAL_HEIGHT)
+		if (ball.y > VIRTUAL_HEIGHT && !s_data->bricks.empty())
 		{
 			sound.setBuffer(sound_buffer[HURT]);
 

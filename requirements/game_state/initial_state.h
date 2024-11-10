@@ -114,7 +114,7 @@ class initial_state : public bb::BASE_STATE
 			game_state.change_to(highest_score);
 		}
 		
-		if (sel == 2)
+		if (sel == 2 || bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
 		{
 			return EXIT_CODE;
 		}

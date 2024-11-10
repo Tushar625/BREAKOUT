@@ -44,7 +44,7 @@ inline bool bb::Game::Create()
 	
 	srand(time(0));
 
-	bb::MY_GAME.set_fps(60);
+	bb::MY_GAME.set_fps(30);
 
 	game_state.change_to(initial);
 

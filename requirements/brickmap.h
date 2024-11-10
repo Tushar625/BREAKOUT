@@ -117,18 +117,6 @@ public:
 					{
 						make_brick_vertex(index * 6, tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier));
 
-						/*bricks.push_back(vertex[0]);
-
-						bricks.push_back(vertex[1]);
-
-						bricks.push_back(vertex[2]);
-
-						bricks.push_back(vertex[3]);
-
-						bricks.push_back(vertex[4]);
-
-						bricks.push_back(vertex[5]);*/
-
 						// storing the score color tier data alongside bricks
 
 						bricks_data[index] = { ((color + 1) * 10 + tier * 5), (alt_front ? alt_color : color), (alt_front ? alt_tier : tier) };
@@ -138,18 +126,6 @@ public:
 					else
 					{
 						make_brick_vertex(index * 6, tempx, yout, color, tier);
-
-						/*bricks.push_back(vertex[0]);
-
-						bricks.push_back(vertex[1]);
-
-						bricks.push_back(vertex[2]);
-
-						bricks.push_back(vertex[3]);
-
-						bricks.push_back(vertex[4]);
-
-						bricks.push_back(vertex[5]);*/
 
 						// storing the score color tier data alongside bricks
 
@@ -167,18 +143,16 @@ public:
 			}
 		} while (bricks.size() == 0);
 
+		// trim out excess allocated space
+
 		bricks.resize(index * 6);
 
 		bricks_data.resize(index);
-		
-		//bricks.shrink_to_fit();
-
-		//bricks_data.shrink_to_fit();
 	}
 
 	inline void collision(ball_class& ball, int &score, bb::Firecracker& explo) noexcept
 	{
-		bool flag = true;
+		bool flag = true;	// used to indicate if all bricks are destroyed
 
 		for(int i = 0; i < bricks_data.size(); i++)
 		{
@@ -186,17 +160,19 @@ public:
 
 			// xout and yout gets the point of collision on the brick
 
-			auto brick_x = bricks[ib].position.x, brick_y = bricks[ib].position.y;
+			double brick_x = bricks[ib].position.x, brick_y = bricks[ib].position.y;
 
 			double xout, yout;
 
 			bricks_data_structure& brick_data = bricks_data[i];
 
-			bool visible = is_visible(i);
+			// destroyed bricks are sent to a position (-100, -100)
+
+			const bool visible = brick_x != -100;
 
 			if(flag && visible)
 			{
-				flag = false;
+				flag = false;	// we still have some brick left
 			}
 
 			if (visible && ball.collids(xout, yout, brick_x, brick_y, m_brickW, m_brickH))
@@ -294,9 +270,7 @@ public:
 
 					// destroy the brick and its data
 
-					/*bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
-
-					bricks_data.erase(std::begin(bricks_data) + i);*/
+					// destroyed bricks are sent to a position (-100, -100)
 
 					make_brick_vertex(ib, -100, -100, 0, 0);
 				}
@@ -307,16 +281,12 @@ public:
 					make_brick_vertex(ib, brick_x, brick_y, --brick_data.color, brick_data.tier);
 				}
 			}
-			//else
-			//{
-			//	// no collision
-
-			//	++i;
-			//}
 		}
 
 		if (flag)
 		{
+			// all bricks are destroyed
+
 			clear();
 		}
 	}
@@ -335,15 +305,8 @@ private:
 		}
 	}
 
-	bool is_visible(int index)
-	{
-		return bricks[index * 6].position != sf::Vector2f(-100, -100);
-	}
-
 	void make_brick_vertex(int index, int brickx, int bricky, int color, int tier)
 	{
-		//std::vector<sf::Vertex> vertex(6);
-
 		// generating top left position of the brick on the texture
 
 		int x = (color * 4 /*no of tiers*/ + tier) % m_brickN * m_brickW;
