@@ -76,7 +76,7 @@ class play_state : public bb::BASE_STATE
 
 		if (ball.dy > 0 && ball.collids(xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
 		{
-			auto side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
+			const bb::collision_box_side_metric& side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
 
 			sound.setBuffer(sound_buffer[PADDLE_HIT]);
 

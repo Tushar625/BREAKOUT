@@ -40,9 +40,11 @@ public:
 
 		bricks_data.clear();
 
-		bricks.reserve(static_cast<size_t>(height * width * 6));	// reserve enough storage for all the bricks
+		int index = 0;
 
-		bricks_data.reserve(static_cast<size_t>(height * width));
+		bricks.resize(static_cast<size_t>(height * width * 6));	// reserve enough storage for all the bricks
+
+		bricks_data.resize(static_cast<size_t>(height * width));
 
 		/*
 			we use two triangles to represent each brick,
@@ -113,9 +115,9 @@ public:
 				{
 					if (alt)
 					{
-						const std::vector<sf::Vertex>& vertex = make_brick_vertex(tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier));
+						make_brick_vertex(index * 6, tempx, yout, (alt_front ? alt_color : color), (alt_front ? alt_tier : tier));
 
-						bricks.push_back(vertex[0]);
+						/*bricks.push_back(vertex[0]);
 
 						bricks.push_back(vertex[1]);
 
@@ -125,19 +127,19 @@ public:
 
 						bricks.push_back(vertex[4]);
 
-						bricks.push_back(vertex[5]);
+						bricks.push_back(vertex[5]);*/
 
 						// storing the score color tier data alongside bricks
 
-						bricks_data.push_back({ ((color + 1) * 10 + tier * 5), (alt_front ? alt_color : color), (alt_front ? alt_tier : tier) });
+						bricks_data[index] = { ((color + 1) * 10 + tier * 5), (alt_front ? alt_color : color), (alt_front ? alt_tier : tier) };
 						
 						alt_front = !alt_front;
 					}
 					else
 					{
-						const std::vector<sf::Vertex>& vertex = make_brick_vertex(tempx, yout, color, tier);
+						make_brick_vertex(index * 6, tempx, yout, color, tier);
 
-						bricks.push_back(vertex[0]);
+						/*bricks.push_back(vertex[0]);
 
 						bricks.push_back(vertex[1]);
 
@@ -147,12 +149,14 @@ public:
 
 						bricks.push_back(vertex[4]);
 
-						bricks.push_back(vertex[5]);
+						bricks.push_back(vertex[5]);*/
 
 						// storing the score color tier data alongside bricks
 
-						bricks_data.push_back({ ((color + 1) * 10 + tier * 5), color, tier });
+						bricks_data[index] = { ((color + 1) * 10 + tier * 5), color, tier };
 					}
+
+					index++;
 
 					tempx += x_inc;
 				}
@@ -163,14 +167,20 @@ public:
 			}
 		} while (bricks.size() == 0);
 
-		bricks.shrink_to_fit();
+		bricks.resize(index * 6);
 
-		bricks_data.shrink_to_fit();
+		bricks_data.resize(index);
+		
+		//bricks.shrink_to_fit();
+
+		//bricks_data.shrink_to_fit();
 	}
 
-	void collision(ball_class& ball, int &score, bb::Firecracker& explo)
+	inline void collision(ball_class& ball, int &score, bb::Firecracker& explo) noexcept
 	{
-		for(int i = 0; i < bricks_data.size();)
+		bool flag = true;
+
+		for(int i = 0; i < bricks_data.size(); i++)
 		{
 			int ib = i * 6;
 
@@ -180,7 +190,16 @@ public:
 
 			double xout, yout;
 
-			if (ball.collids(xout, yout, brick_x, brick_y, m_brickW, m_brickH))
+			bricks_data_structure& brick_data = bricks_data[i];
+
+			bool visible = is_visible(i);
+
+			if(flag && visible)
+			{
+				flag = false;
+			}
+
+			if (visible && ball.collids(xout, yout, brick_x, brick_y, m_brickW, m_brickH))
 			{
 				// a brick is visible and collids with the ball
 
@@ -192,14 +211,14 @@ public:
 				
 				// setting explosion
 
-				explo.create(sf::Vector2f(brick_x + m_brickW / 2.0, brick_y + m_brickH / 2.0), BRICK_COLOR[bricks_data[i].color], 2000);
+				explo.create(sf::Vector2f(brick_x + m_brickW / 2.0, brick_y + m_brickH / 2.0), BRICK_COLOR[brick_data.color], 2000);
 
 				/*
 					as floating point numbers are not very precise we cannot check for equality
 					instead we check for the difference
 				*/
 
-				auto side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, brick_x, brick_y, m_brickW, m_brickH);
+				const bb::collision_box_side_metric& side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, brick_x, brick_y, m_brickW, m_brickH);
 
 				if (side.left)
 				{
@@ -267,43 +286,38 @@ public:
 
 				// check whether we update or delete the brick
 
-				if (bricks_data[i].color == 0)
+				if (brick_data.color == 0)
 				{
 					// updating score
 
-					score += bricks_data[i].score;
+					score += brick_data.score;
 
 					// destroy the brick and its data
 
-					bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
+					/*bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
 
-					bricks_data.erase(std::begin(bricks_data) + i);
+					bricks_data.erase(std::begin(bricks_data) + i);*/
+
+					make_brick_vertex(ib, -100, -100, 0, 0);
 				}
 				else
 				{
 					// upgrade the brick
 
-					const std::vector<sf::Vertex>& vertex = make_brick_vertex(brick_x, brick_y, --bricks_data[i].color, bricks_data[i].tier);
-
-					bricks[ib++] = vertex[0];
-
-					bricks[ib++] = vertex[1];
-
-					bricks[ib++] = vertex[2];
-
-					bricks[ib++] = vertex[3];
-
-					bricks[ib++] = vertex[4];
-
-					bricks[ib] = vertex[5];
+					make_brick_vertex(ib, brick_x, brick_y, --brick_data.color, brick_data.tier);
 				}
 			}
-			else
-			{
-				// no collision
+			//else
+			//{
+			//	// no collision
 
-				++i;
-			}
+			//	++i;
+			//}
+		}
+
+		if (flag)
+		{
+			clear();
 		}
 	}
 
@@ -321,9 +335,14 @@ private:
 		}
 	}
 
-	std::vector<sf::Vertex> make_brick_vertex(int brickx, int bricky, int color, int tier)
+	bool is_visible(int index)
 	{
-		std::vector<sf::Vertex> vertex(6);
+		return bricks[index * 6].position != sf::Vector2f(-100, -100);
+	}
+
+	void make_brick_vertex(int index, int brickx, int bricky, int color, int tier)
+	{
+		//std::vector<sf::Vertex> vertex(6);
 
 		// generating top left position of the brick on the texture
 
@@ -333,19 +352,17 @@ private:
 
 		//std::cout << "(" << color << ", " << tier << ") -> " << "(" << x << ", " << y << ") ";
 
-		vertex[0] = { sf::Vector2f(brickx, bricky), sf::Vector2f(x, y) };
+		bricks[index + 0] = { sf::Vector2f(brickx, bricky), sf::Vector2f(x, y) };
 
-		vertex[1] = { sf::Vector2f(brickx, bricky + m_brickH), sf::Vector2f(x, y + m_brickH) };
+		bricks[index + 1] = { sf::Vector2f(brickx, bricky + m_brickH), sf::Vector2f(x, y + m_brickH) };
 
-		vertex[2] = { sf::Vector2f(brickx + m_brickW, bricky), sf::Vector2f(x + m_brickW, y) };
+		bricks[index + 2] = { sf::Vector2f(brickx + m_brickW, bricky), sf::Vector2f(x + m_brickW, y) };
 
-		vertex[3] = { sf::Vector2f(brickx, bricky + m_brickH), sf::Vector2f(x, y + m_brickH) };
+		bricks[index + 3] = { sf::Vector2f(brickx, bricky + m_brickH), sf::Vector2f(x, y + m_brickH) };
 
-		vertex[4] = { sf::Vector2f(brickx + m_brickW, bricky), sf::Vector2f(x + m_brickW, y) };
+		bricks[index + 4] = { sf::Vector2f(brickx + m_brickW, bricky), sf::Vector2f(x + m_brickW, y) };
 
-		vertex[5] = { sf::Vector2f(brickx + m_brickW, bricky + m_brickH), sf::Vector2f(x + m_brickW, y + m_brickH) };
-
-		return vertex;
+		bricks[index + 5] = { sf::Vector2f(brickx + m_brickW, bricky + m_brickH), sf::Vector2f(x + m_brickW, y + m_brickH) };
 	}
 
 	const sf::Texture& m_texture;
