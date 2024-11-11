@@ -1,4 +1,5 @@
-// the initial state of this game
+
+// the initial state of this game home of the game
 
 #pragma once
 
@@ -19,12 +20,9 @@ void set_highest_score_state(int score);
 class initial_state : public bb::BASE_STATE
 {
 	/*
-		this demonstrate how nicely we can allocate(during entry) and deallcate(during exit)
-		state data 
+		a structure nicely encaptulate the data (buttons and text messages)
+		used in this state locally
 	*/
-	
-
-	// a structure nicely encaptulate the data used in this state locally
 
 	struct data
 	{
@@ -37,7 +35,7 @@ class initial_state : public bb::BASE_STATE
 		data() :
 			button_arr{
 				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START"),
-				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGH SCORES"),
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGHEST SCORE"),
 				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT")
 			},
 			menu({ &button_arr[0], &button_arr[1], &button_arr[2] })
@@ -47,6 +45,8 @@ class initial_state : public bb::BASE_STATE
 			breakout.setString("BREAKOUT");
 
 			int xout, yout;
+
+			// place the center of breakout text in the center of the screen
 
 			bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, LARGE_FONT_SIZE, (int)breakout.getLocalBounds().width, bb::CENTER);
 
@@ -62,7 +62,7 @@ class initial_state : public bb::BASE_STATE
 
 	void Enter()
 	{
-		b_data = new data();	// creating the data used in this state
+		b_data = new data();	// creating the local state data
 
 		music.setLoop(true);
 
@@ -133,7 +133,7 @@ class initial_state : public bb::BASE_STATE
 
 	void Exit()
 	{
-		delete b_data;	// delete the data of this state
+		delete b_data;	// destroying the local state data
 
 		music.stop();
 	}

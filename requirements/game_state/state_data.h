@@ -223,7 +223,7 @@ struct level_data_type
 		bb::WINDOW.draw(bricks);
 	}
 
-	bool all_bricks_explosions_left()
+	bool all_bricks_explosions_finished()
 	{
 		return bricks.empty() && explo.empty();
 	}

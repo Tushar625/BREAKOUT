@@ -1,4 +1,5 @@
-// the initial state of this game
+
+// the message state of this game, displays the victory and defeat message
 
 #pragma once
 
@@ -7,12 +8,9 @@
 class message_state : public bb::BASE_STATE
 {
 	/*
-		this demonstrate how nicely we can allocate(during entry) and deallcate(during exit)
-		state data
+		a structure nicely encaptulate the data (buttons and text messages)
+		used in this state locally
 	*/
-
-
-	// a structure nicely encaptulate the data used in this state locally
 
 	struct data
 	{
@@ -35,14 +33,18 @@ class message_state : public bb::BASE_STATE
 
 			main_message_text.setString(main_message);
 
-			/*
-				imagine a box placed in the center of the screen with height
-				VIRTUAL_HEIGHT / 2 and width same as main message
-			*/
-
 			int xout, yout, boxh = VIRTUAL_HEIGHT / 1.7;
 
+			/*
+				imagine a box placed in the center of the screen with height
+				boxh and width same as main message
+
+				xout and yout represents the top left point this box
+			*/
+
 			bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, boxh, (int)main_message_text.getLocalBounds().width, bb::CENTER);
+
+			// place the main message in the box, touching its top border
 
 			main_message_text.setPosition(sf::Vector2f(xout, yout));
 
@@ -55,6 +57,8 @@ class message_state : public bb::BASE_STATE
 			score_text.setString(std::to_string(score));
 
 			int tempx, tempy;
+
+			// place the center of score text 10 pixels up the center of the box
 
 			bb::to_top_left(
 				tempx,
@@ -76,6 +80,8 @@ class message_state : public bb::BASE_STATE
 
 			complimentary_message_text.setString(complimentary_message);
 
+			// place the center of comp message 10 pixels down the center of the box
+
 			bb::to_top_left(
 				tempx,
 				tempy,
@@ -90,6 +96,11 @@ class message_state : public bb::BASE_STATE
 
 			// buttons
 
+			/*
+				bottom of the buttons are at the same level as the bottom of the box
+				they are placed 90 pixels away from the sides
+			*/
+
 			menu[0].set_pos(90, yout + boxh, bb::BOTTOM_LEFT);
 
 			menu[1].set_pos(VIRTUAL_WIDTH - 90, yout + boxh, bb::BOTTOM_RIGHT);
@@ -99,6 +110,8 @@ class message_state : public bb::BASE_STATE
 
 	public:
 
+
+	// the data this state receives from play state
 
 	std::string main_message, complimentary_message, next_button_text;
 
@@ -113,7 +126,11 @@ class message_state : public bb::BASE_STATE
 
 	void Enter()
 	{
+		// creating the local state data
+
 		b_data = new data(main_message, complimentary_message, next_button_text, score);	// creating the data used in this state
+
+		// following strings are not necessary anymore as the sf::Text objects are created
 
 		main_message.clear();
 
@@ -167,6 +184,8 @@ class message_state : public bb::BASE_STATE
 
 	void Render()
 	{
+		// render the buttons and the messages
+
 		b_data->menu.Render(str_button::box);
 
 		bb::WINDOW.draw(b_data->main_message_text);
@@ -179,20 +198,20 @@ class message_state : public bb::BASE_STATE
 
 	void Exit()
 	{
-		delete b_data;	// delete the data of this state
+		delete b_data;	// delete the local state data
 	}
 
 }message;
 
-// following functions are used to send data to serve state from other states
+// following function is used to send data to message state state
 
 void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score)
 {
-	message.main_message = main_message;
+	message.main_message = std::move(main_message);
 
-	message.complimentary_message = complimentary_message;
+	message.complimentary_message = std::move(complimentary_message);
 
-	message.next_button_text = next_button_text;
+	message.next_button_text = std::move(next_button_text);
 
 	message.score = score;
 }

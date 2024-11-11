@@ -24,7 +24,7 @@ Update:
 
 	b_data -> Highest_Score_Button -> Highest Score State, it receives, "i_data.highest_score"
 
-	b_data -> Quite_Button         -> Stop Game
+	Esc or b_data -> Quite_Button  -> Stop Game
 
 Render:
 

@@ -1,4 +1,5 @@
-// the initial state of this game
+
+// the highest score state of this game, displays the highest score ever achieved
 
 #pragma once
 
@@ -7,12 +8,9 @@
 class highest_score_state : public bb::BASE_STATE
 {
 	/*
-		this demonstrate how nicely we can allocate(during entry) and deallcate(during exit)
-		state data
+		a structure nicely encaptulate the data (buttons and text messages)
+		used in this state locally
 	*/
-
-
-	// a structure nicely encaptulate the data used in this state locally
 
 	struct data
 	{
@@ -36,12 +34,16 @@ class highest_score_state : public bb::BASE_STATE
 
 			/*
 				imagine a box placed in the center of the screen with height
-				VIRTUAL_HEIGHT / 2 and width same as main message
+				boxh and width same as main message
+
+				xout and yout represents the top left point this box
 			*/
 
 			int xout, yout, boxh = VIRTUAL_HEIGHT / 1.7;
 
 			bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, boxh, (int)main_message_text.getLocalBounds().width, bb::CENTER);
+
+			// place the main message in the box, touching its top border
 
 			main_message_text.setPosition(sf::Vector2f(xout, yout));
 
@@ -54,6 +56,8 @@ class highest_score_state : public bb::BASE_STATE
 			score_text.setString(std::to_string(score));
 
 			int tempx, tempy;
+
+			// place the center of score text at the center of the box
 
 			bb::to_top_left(
 				tempx,
@@ -69,6 +73,11 @@ class highest_score_state : public bb::BASE_STATE
 
 			// buttons
 
+			/*
+				bottom of the button is at the same level as the bottom of the box
+				and it is placed in the middle of the screen
+			*/
+
 			menu[0].set_pos(VIRTUAL_WIDTH / 2, yout + boxh, bb::BOTTOM_CENTER);
 		}
 	} *b_data;
@@ -76,6 +85,8 @@ class highest_score_state : public bb::BASE_STATE
 
 	public:
 
+
+	// data received from the initial state
 
 	int score;
 
@@ -88,7 +99,7 @@ class highest_score_state : public bb::BASE_STATE
 
 	void Enter()
 	{
-		b_data = new data(score);	// creating the data used in this state
+		b_data = new data(score);	// creating the local state data
 	}
 
 
@@ -141,12 +152,12 @@ class highest_score_state : public bb::BASE_STATE
 
 	void Exit()
 	{
-		delete b_data;	// delete the data of this state
+		delete b_data;	// destroying the local state data
 	}
 
 }highest_score;
 
-// following functions are used to send data to serve state from other states
+// following functions are used to send data to this state from initial states
 
 void set_highest_score_state(int score)
 {

@@ -1,3 +1,6 @@
+
+// serve state of the game it represent the time when the ball is ready to serve
+
 #pragma once
 
 
@@ -12,13 +15,19 @@ class serve_state : public bb::BASE_STATE
 {
 	public:
 	
+	// the data it receives from initial state
+
 	game_data_type* i_data;
 
 	serve_state() : i_data(nullptr)
 	{
+		// msg used to print score and level
+
 		msg = small_text;
 
 		msg.setFillColor(sf::Color::Cyan);
+
+		// this semi-transparent instruction will be displayed in the middle of the screen
 
 		instructions = small_text;
 		
@@ -35,7 +44,7 @@ class serve_state : public bb::BASE_STATE
 
 	private:
 
-	level_data_type s_data;
+	level_data_type s_data;	// level data created here 
 
 	sf::Text msg, instructions;
 
@@ -70,6 +79,8 @@ class serve_state : public bb::BASE_STATE
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Enter))
 		{
+			// serve the ball
+
 			sound.setBuffer(sound_buffer[PADDLE_HIT]);
 
 			sound.play();
@@ -81,6 +92,8 @@ class serve_state : public bb::BASE_STATE
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
 		{
+			// goto home
+
 			sound.setBuffer(sound_buffer[PAUSE]);
 
 			sound.play();
@@ -133,7 +146,7 @@ class serve_state : public bb::BASE_STATE
 
 }serve;
 
-// following functions are used to send data to serve state from other states
+// following functions are used to send data to serve state from initial state
 
 void set_serve_state(game_data_type* i_data)
 {

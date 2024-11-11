@@ -1,12 +1,23 @@
+
+// represent the play state, the actual gameplay is managed here
+
+
+
 #pragma once
+
+
 
 extern class message_state message;
 
 void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score);
 
+
+
 class play_state : public bb::BASE_STATE
 {
 	public:
+
+	// data received from serve state
 
 	game_data_type* i_data;
 
@@ -14,9 +25,13 @@ class play_state : public bb::BASE_STATE
 
 	play_state() : i_data(nullptr), s_data(nullptr)
 	{
+		// msg used to print score and level
+
 		msg = small_text;
 
 		msg.setFillColor(sf::Color::Cyan);
+
+		// this semi-transparent instruction will be displayed in the middle of the screen
 
 		instructions = small_text;
 
@@ -36,9 +51,6 @@ class play_state : public bb::BASE_STATE
 	sf::Text msg, instructions;
 
 	sf::Sound sound;
-
-	void Enter()
-	{}
 
 	int Update(double dt)
 	{
@@ -160,7 +172,7 @@ class play_state : public bb::BASE_STATE
 		//all bricks are crushed
 		//======================
 
-		if (s_data->all_bricks_explosions_left())
+		if (s_data->all_bricks_explosions_finished())
 		{
 			// victory
 
@@ -236,13 +248,9 @@ class play_state : public bb::BASE_STATE
 		s_data->render_bricks_explosions();
 	}
 
-	/*void Exit()
-	{
-		level.clear_level();
-	}*/
 }play;
 
-// following functions are used to send data to serve state from other states
+// following functions are used to send data to play state from serve state
 
 void set_play_state(game_data_type* i_data, level_data_type* s_data)
 {

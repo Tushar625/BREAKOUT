@@ -1,0 +1,31 @@
+    ______________________________________
+   |______________________________________|
+   //                                   //|
+  //    Plan for Highest Score State   // /
+ //                                   // /
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// /
+|_____________________________________|/
+
+When user want to see the highest score achieved till now
+
+Data:
+
+	"score" (actually the highest score) from initial state
+
+	b_data { Home_button, main_message_text, score_text }
+
+Enter:
+
+	Create b_data according to "score"
+
+Update:
+
+	b_data -> Home_button       -> initial state
+
+Render:
+
+	Render b_data
+
+Exit:
+
+	Destroy b_data
