@@ -71,7 +71,7 @@ public:
 		return dir;
 	}
 
-	void render()
+	void render() const
 	{
 		// getting the poper paddle sprite according to size and color
 

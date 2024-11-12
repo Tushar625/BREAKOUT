@@ -52,12 +52,6 @@ class serve_state : public bb::BASE_STATE
 
 	void Enter()
 	{
-		// set random paddle
-
-		s_data.paddle.size = rand() % 4;
-
-		s_data.paddle.color = rand() % 4;
-
 		// place the paddle in the middle
 
 		s_data.paddle.x = VIRTUAL_WIDTH / 2.0 - s_data.paddle.get_width() / 2.0;
