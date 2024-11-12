@@ -90,6 +90,8 @@ class highest_score_state : public bb::BASE_STATE
 
 	int score;
 
+	highest_score_state() : b_data(nullptr), score(0)
+	{}
 
 	private:
 

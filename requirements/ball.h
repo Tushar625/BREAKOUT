@@ -6,15 +6,20 @@ class ball_class
 
 public:
 
+	/*
+		we keep these parameters public so that they can be changed
+		later to create different effects
+	*/
+
 	double x, y, dx, dy;
 
-	int index;
+	int color;
 
 	ball_class()
 	{
 		x = y = dx = dy = 0;
 
-		index = 0;
+		color = 0;
 	}
 
 	int get_width() const
@@ -31,20 +36,25 @@ public:
 	{
 		dx = (100 + rand() % 51) * (rand() % 2 ? -1 : 1);
 		
-		dy = (100 + rand() % 51) * (rand() % 2 ? -1 : 1);
+		dy = -(100 + rand() % 51) - ball_type * 10;
 
 		x = xin;
 
 		y = yin;
 
-		index = ball_type;
+		color = ball_type;
 	}
 
 	// this collision detection function treats the ball as a circle
 
-	bool collids(double& xp, double& yp, double xb, double yb, int widthb, int heightb) const
+	bool collids(double& xp, double& yp, const sf::FloatRect& box) const
 	{
-		return bb::circle_aabb_collision(xp, yp, x + get_width() / 2.0, y + get_width() / 2.0, get_width() / 2.0, xb, yb, widthb, heightb);
+		return bb::circle_aabb_collision(xp, yp, x + get_width() / 2.0, y + get_width() / 2.0, get_width() / 2.0, box.getPosition().x, box.getPosition().y, box.width, box.height);
+	}
+
+	bool collids(double& xp, double& yp, const paddle_class& paddle) const
+	{
+		return bb::circle_aabb_collision(xp, yp, x + get_width() / 2.0, y + get_width() / 2.0, get_width() / 2.0, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
 	}
 
 	void update(double dt)
@@ -95,8 +105,10 @@ public:
 
 	void render()
 	{
-		sprite[BALL][index].setPosition(sf::Vector2f(x, y));
+		auto& ball = sprite[BALL][color];
 
-		bb::WINDOW.draw(sprite[BALL][index]);
+		ball.setPosition(sf::Vector2f(x, y));
+
+		bb::WINDOW.draw(ball);
 	}
 };

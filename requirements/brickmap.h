@@ -1,3 +1,10 @@
+
+/*
+	This class repersents the entire brick map, it is created by inheriting sfml
+	drawable class so that the entire brick map can be drawn with one WINDOW.draw()
+	call, which is very efficient
+*/
+
 #pragma once
 
 
@@ -5,7 +12,7 @@ class BrickMap : public sf::Drawable
 {
 public:
 
-	BrickMap() : m_texture(texture[MAIN]), m_brickW(32), m_brickH(16), m_brickN(6)
+	BrickMap() : m_texture(texture[MAIN]), m_brickW(32), m_brickH(16), m_brickN(6)/*6 bricks per row in the spritesheet*/
 	{}
 
 	void clear()
@@ -15,12 +22,53 @@ public:
 		bricks_data.clear();
 	}
 
+	// all bricks are destroyed or not
+
 	bool empty() const
 	{
 		return bricks.empty();
 	}
 
-	void level_maker(int level = 10)
+	// create the brickmap according to level
+
+	/*
+		how I make the brickmap:
+
+		start with a solid matrix,
+		
+		**********
+		**********
+		**********
+		**********
+		
+		effect 1: remove a row,
+		
+		**********
+		
+		**********
+		**********
+		
+		effect 2: alternate the colors of bricks in a row,
+		
+		#*#*#*#*#*
+		*#*#*#*#*#
+
+		effect 3: skip bricks alternatively in a row,
+		
+		* * * * * 
+		 * * * * *
+
+		effect 4: do the both of last two effects
+
+		 * # * # *
+		* # * # * 
+		 # * # * #
+		# * # * #
+
+		we randomly apply an effect on each row to generate our master piece pattern
+	*/
+
+	void level_maker(int level = 0)
 	{
 		// no. of bricks row and column wise
 
@@ -32,7 +80,7 @@ public:
 
 		int max_color = std::min(level, 4);		// increase 1 max_color per level
 
-		int max_tier = std::min(level / 3, 4);	// increase 1 max_tier per 3 levels
+		int max_tier = std::min(level / 3, 3);	// increase 1 max_tier per 3 levels
 
 		// reserving space for the bricks
 
@@ -42,7 +90,9 @@ public:
 
 		int index = 0;
 
-		bricks.resize(static_cast<size_t>(height * width * 6));	// reserve enough storage for all the bricks
+		// allocate space for all the bricks
+
+		bricks.resize(static_cast<size_t>(height * width * 6));
 
 		bricks_data.resize(static_cast<size_t>(height * width));
 
@@ -62,6 +112,7 @@ public:
 			vertex 5    = bottom right
 		*/
 
+		// center of the matrix placed at (VIRTUAL_WIDTH / 2, 70)
 		// from center of the matrix we get the top left corners
 
 		int xout, yout;
@@ -85,14 +136,16 @@ public:
 				}
 
 
-				bool skip = rand() % 2;
+				bool skip = rand() % 2;	// skip every next brick
 
-				bool alt = rand() % 2;
+				bool alt = rand() % 2;	// alternative colouring
 
-				bool skip_front = skip ? rand() % 2 : 0;
+				bool skip_front = skip ? rand() % 2 : 0;	// skip the first brick or not
 
-				bool alt_front = alt ? rand() % 2 : 0;
+				bool alt_front = alt ? rand() % 2 : 0;	// should the first brick get alternate colour or not
 
+
+				// randomly select the color and tier
 
 				int color = rand() % (max_color + 1);
 
@@ -103,7 +156,9 @@ public:
 				int alt_tier = skip ? (rand() % (max_tier + 1)) : 0;
 
 
-				int tempx = (skip_front) ? xout + 32 : xout;
+				int tempx = (skip_front) ? xout + 32 : xout;	// x coordinate of first brick in the row
+
+				// if skipping is enabled we increment the column index by 2 to get the effect
 
 				int col_inc = skip ? 2 : 1;
 
@@ -150,32 +205,40 @@ public:
 		bricks_data.resize(index);
 	}
 
+	/*
+		must call it from update of play state  for collision detection and resolution
+		and setting off an exlosion
+
+		it must also check if all the bricks are broken and empty the bricks array after
+		all bricks are briken
+	*/
+
 	inline void collision(ball_class& ball, int &score, bb::Firecracker& explo) noexcept
 	{
 		bool flag = true;	// used to indicate if all bricks are destroyed
 
 		for(int i = 0; i < bricks_data.size(); i++)
 		{
-			int ib = i * 6;
+			int ib = i * 6;	// 6 vertices represent a brick
 
 			// xout and yout gets the point of collision on the brick
 
 			double brick_x = bricks[ib].position.x, brick_y = bricks[ib].position.y;
 
-			double xout, yout;
-
 			bricks_data_structure& brick_data = bricks_data[i];
 
 			// destroyed bricks are sent to a position (-100, -100)
 
-			const bool visible = brick_x != -100;
+			const bool visible = (brick_x != -100);	// checking x coordinate is enough
 
 			if(flag && visible)
 			{
 				flag = false;	// we still have some brick left
 			}
 
-			if (visible && ball.collids(xout, yout, brick_x, brick_y, m_brickW, m_brickH))
+			double xout, yout;	// gets the point of collision on the brick
+
+			if (visible && ball.collids(xout, yout, sf::FloatRect(brick_x, brick_y, m_brickW, m_brickH)))
 			{
 				// a brick is visible and collids with the ball
 
@@ -189,12 +252,11 @@ public:
 
 				explo.create(sf::Vector2f(brick_x + m_brickW / 2.0, brick_y + m_brickH / 2.0), BRICK_COLOR[brick_data.color], 2000);
 
-				/*
-					as floating point numbers are not very precise we cannot check for equality
-					instead we check for the difference
-				*/
+				// from point of impact we get the point where we should put the ball after collision
 
 				const bb::collision_box_side_metric& side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, brick_x, brick_y, m_brickW, m_brickH);
+
+				// calculate the changes in balls speed
 
 				if (side.left)
 				{
@@ -285,7 +347,7 @@ public:
 
 		if (flag)
 		{
-			// all bricks are destroyed
+			// all bricks are destroyed flag doesn't become false
 
 			clear();
 		}
@@ -308,6 +370,16 @@ private:
 	void make_brick_vertex(int index, int brickx, int bricky, int color, int tier)
 	{
 		// generating top left position of the brick on the texture
+
+		/*
+			start with a position in a matrix where row = color and col = tier
+
+			convert that to an array, then convert that to a position in another matrix
+			with m_brickN no. of columns,
+			
+			then multiply the row position with brick width and col position with brick
+			height to get the top left (x, y) of the brick
+		*/
 
 		int x = (color * 4 /*no of tiers*/ + tier) % m_brickN * m_brickW;
 

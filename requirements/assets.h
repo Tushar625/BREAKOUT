@@ -27,6 +27,12 @@ bb::STATE_MACHINE game_state;
 
 
 
+/*
+	this class has no practical function it's constructor is the first
+	code to run in this application and it prepares the assets for the
+	rest of the game to use
+*/
+
 class ASSET_LOADER
 {
 	public:

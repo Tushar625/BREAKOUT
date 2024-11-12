@@ -2,7 +2,7 @@
 
 
 
-// creating the buttons
+// creating the string buttons
 
 class str_button : public bb::BUTTON
 {
@@ -11,6 +11,12 @@ class str_button : public bb::BUTTON
 	void ORDINARY_STATE() override
 	{
 		button_text.setPosition(sf::Vector2f(get_x(), get_y()));
+
+		/*
+			by default ordinary button color is white, "button_color"
+			is kept to chenge it if needed, here it is used primarily
+			by the menu list pointer to indicate which button is selected
+		*/
 
 		button_text.setFillColor(button_color);
 
@@ -32,9 +38,9 @@ public:
 
 	sf::Color button_color;
 
-	str_button(int xin, int yin, std::string button_str)
+	str_button(int xin, int yin, std::string button_str, bb::COORD_POSITION pos = bb::TOP_LEFT)
 	{
-		button_text = medium_text;	// button text will have sam eproperties as medium text
+		button_text = medium_text;	// button text will have same eproperties as medium text
 
 		button_text.setString(button_str);
 
@@ -42,12 +48,14 @@ public:
 
 		set_width(button_text.getLocalBounds().width);
 
-		set_pos(xin, yin, bb::BOTTOM_CENTER);
+		set_pos(xin, yin, pos);
 
-		button_color = sf::Color::White;
+		button_color = sf::Color::White;	// default ordinary state color is white
 	}
 
 	// pointer for menu as a static member function
+
+	// >>> button <<<
 
 	static void pointer(bb::BUTTON_LIST& menu)
 	{
@@ -67,12 +75,20 @@ public:
 
 		bb::WINDOW.draw(medium_text);
 
+		// change the original state color to indicate that it's selected
+
 		button.button_color = sf::Color::Cyan;
 	}
+
+	// ----------
+	// | button |
+	// ----------
 
 	static void box(bb::BUTTON_LIST& menu)
 	{
 		str_button& button = menu.get_mbutton<str_button>();
+
+		// the text seems to have 6 pixels of padding on the top so we add 6 to the height instead of 12
 
 		sf::RectangleShape box(sf::Vector2f(button.get_width() + 12, button.get_height() + 6));
 
@@ -85,6 +101,8 @@ public:
 		box.setFillColor(sf::Color::Transparent);
 
 		bb::WINDOW.draw(box);
+
+		// change the original state color to indicate that it's selected
 
 		button.button_color = sf::Color::Cyan;
 	}
@@ -104,28 +122,19 @@ struct game_data_type
 
 	int health;
 
-	game_data_type()
+	game_data_type() : level(0), highest_score(0), score_till_last_level(0), health(MAX_HEALTH)
 	{
-		FILE* fp = NULL;
+		FILE* file = NULL;
 
-		fp = fopen("breakout", "rb");
+		file = fopen("breakout", "rb");
 
-		if (fp == NULL || fread(this, sizeof(game_data_type), 1, fp) != 1)
+		if (file)
 		{
-			// file not found or corrupted
+			// file found
 
-			level = 0;
+			fread(this, sizeof(game_data_type), 1, file);	// read ths object out ofthe file
 
-			highest_score = 0;
-
-			score_till_last_level = 0;
-
-			health = MAX_HEALTH;
-		}
-
-		if(fp)
-		{
-			fclose(fp);
+			fclose(file);
 		}
 	}
 
@@ -133,18 +142,20 @@ struct game_data_type
 	{
 		// load this data back into a file
 
-		FILE* fp = NULL;
+		FILE* file = NULL;
 
-		fp = fopen("breakout", "wb");
+		file = fopen("breakout", "wb");
 
-		fwrite(this, sizeof(game_data_type), 1, fp);
+		fwrite(this, sizeof(game_data_type), 1, file);
 
-		fclose(fp);
+		fclose(file);
 	}
+
+	// after game is over this functon is used to reset the general game data
 
 	void reset(int current_level_score)
 	{
-		int score = score_till_last_level + current_level_score;
+		int total_score = score_till_last_level + current_level_score;
 
 		level = 0;
 
@@ -152,7 +163,7 @@ struct game_data_type
 
 		health = MAX_HEALTH;
 
-		if (score > highest_score)
+		if (total_score > highest_score)
 		{
 			// new highest score
 
@@ -162,9 +173,11 @@ struct game_data_type
 
 			sound.play();
 
-			highest_score = score;
+			highest_score = total_score;
 		}
 	}
+
+	// change the general game data to reach next level
 
 	void next_level(int current_level_score)
 	{
@@ -192,6 +205,9 @@ struct level_data_type
 	bb::Firecracker explo;
 
 	int current_level_score;
+
+	level_data_type() : current_level_score(0)
+	{}
 
 	// sets a new level
 

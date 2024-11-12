@@ -31,7 +31,7 @@ inline bool bb::Game::Create()
 
 	bb::WINDOW.setSize(sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-	auto this_view = bb::WINDOW.getView();
+	sf::View this_view = bb::WINDOW.getView();
 
 	this_view.reset(sf::FloatRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT));
 
@@ -48,11 +48,6 @@ inline bool bb::Game::Create()
 
 	game_state.change_to(initial);
 
-	
-
-	//text.setFillColor(sf::Color::White);
-
-	// ~~~~ [write your statements here] ~~~~
 
 	return SUCCESS;
 }
@@ -65,13 +60,6 @@ inline bool bb::Game::Update(double dt)
 
 	if (bb::INPUT.isClosed() || game_state.Update(dt) == EXIT_CODE)
 		return STOP_GAME_LOOP;
-
-	/*auto pos = INPUT.pointer();
-
-	if(INPUT.isPressedM(sf::Mouse::Left))
-	{
-		std::cout << "{" << pos.x << ", " << pos.y << "}\n";
-	}*/
 
 	return !STOP_GAME_LOOP;
 }
@@ -88,6 +76,8 @@ inline void bb::Game::Clear()
 inline void bb::Game::Render()
 {
 	game_state.Render();
+
+	//render fps
 
 	small_text.setString(std::to_string(static_cast<int>(bb::MY_GAME.get_fps() + .5)));
 

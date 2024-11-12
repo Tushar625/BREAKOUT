@@ -34,9 +34,9 @@ class initial_state : public bb::BASE_STATE
 
 		data() :
 			button_arr{
-				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START"),
-				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGHEST SCORE"),
-				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT")
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START", bb::BOTTOM_CENTER),
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGHEST SCORE", bb::BOTTOM_CENTER),
+				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT", bb::BOTTOM_CENTER)
 			},
 			menu({ &button_arr[0], &button_arr[1], &button_arr[2] })
 		{
@@ -54,6 +54,12 @@ class initial_state : public bb::BASE_STATE
 		}
 	} *b_data;
 
+public:
+
+	initial_state() : b_data(nullptr)
+	{}
+
+private:
 
 	sf::Sound sound;
 

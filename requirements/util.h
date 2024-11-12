@@ -10,6 +10,8 @@ sf::Sprite get_background_sprite(const sf::Texture& texture)
 
 	auto bg_size = texture.getSize();
 
+	// scale down the background sprite to fit the window
+
 	bg_sprite.setScale(sf::Vector2f(VIRTUAL_WIDTH / (float)(bg_size.x - 1), VIRTUAL_HEIGHT / (float)(bg_size.y - 1)));
 
 	return bg_sprite;
@@ -54,7 +56,7 @@ std::vector<sf::Sprite> get_ball_sprites(const sf::Texture& texture)
 		x += 8;
 	}
 
-	x = 64;
+	x = 96;
 	
 	y = 56;
 
@@ -66,42 +68,6 @@ std::vector<sf::Sprite> get_ball_sprites(const sf::Texture& texture)
 	}
 
 	return balls;
-}
-
-std::vector<sf::Sprite> get_brick_sprites(const sf::Texture& texture)
-{
-	std::vector<sf::Sprite> bricks(21, sf::Sprite{ texture });
-
-	int counter = 0;
-
-	int x = 0, y = 0;
-
-	for (int i = 0; i < 3; i++)
-	{
-		x = 0;
-
-		for (int j = 0; j < 6; j++)
-		{
-			bricks[counter++].setTextureRect(sf::IntRect(x, y, 32, 16));
-
-			x += 32;
-		}
-
-		y += 16;
-	}
-
-	// collecting last three bricks
-
-	x = 0;
-
-	while (counter < 21)
-	{
-		bricks[counter++].setTextureRect(sf::IntRect(x, y, 32, 16));
-
-		x += 32;
-	}
-
-	return bricks;
 }
 
 std::vector<sf::Sprite> get_heart_sprites(const sf::Texture& texture)

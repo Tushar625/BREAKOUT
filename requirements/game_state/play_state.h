@@ -86,7 +86,7 @@ class play_state : public bb::BASE_STATE
 
 		// paddle must not collide with a ball that is going up
 
-		if (ball.dy > 0 && ball.collids(xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height()))
+		if (ball.dy > 0 && ball.collids(xout, yout, paddle))
 		{
 			const bb::collision_box_side_metric& side = bb::circle_aabb_collision_side(ball.x, ball.y, ball.get_width(), xout, yout, paddle.x, paddle.y, paddle.get_width(), paddle.get_height());
 

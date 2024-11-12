@@ -42,7 +42,12 @@ class message_state : public bb::BASE_STATE
 				xout and yout represents the top left point this box
 			*/
 
-			bb::to_top_left(xout, yout, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, boxh, (int)main_message_text.getLocalBounds().width, bb::CENTER);
+			bb::to_top_left(
+				xout, yout,
+				VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2,
+				boxh, (int)main_message_text.getLocalBounds().width,
+				bb::CENTER
+			);
 
 			// place the main message in the box, touching its top border
 
@@ -61,12 +66,9 @@ class message_state : public bb::BASE_STATE
 			// place the center of score text 10 pixels up the center of the box
 
 			bb::to_top_left(
-				tempx,
-				tempy,
-				VIRTUAL_WIDTH / 2,
-				VIRTUAL_HEIGHT / 2 - 10,
-				MEDIUM_FONT_SIZE,
-				(int)score_text.getLocalBounds().width,
+				tempx, tempy,
+				VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 - 10,
+				MEDIUM_FONT_SIZE, (int)score_text.getLocalBounds().width,
 				bb::CENTER
 			);
 
@@ -83,12 +85,9 @@ class message_state : public bb::BASE_STATE
 			// place the center of comp message 10 pixels down the center of the box
 
 			bb::to_top_left(
-				tempx,
-				tempy,
-				VIRTUAL_WIDTH / 2,
-				VIRTUAL_HEIGHT / 2 + 10,
-				MEDIUM_FONT_SIZE,
-				(int)complimentary_message_text.getLocalBounds().width,
+				tempx, tempy,
+				VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2 + 10,
+				MEDIUM_FONT_SIZE, (int)complimentary_message_text.getLocalBounds().width,
 				bb::CENTER
 			);
 
@@ -116,6 +115,9 @@ class message_state : public bb::BASE_STATE
 	std::string main_message, complimentary_message, next_button_text;
 
 	int score;
+
+	message_state() : b_data(nullptr), score(0)
+	{}
 
 
 	private:
@@ -207,11 +209,11 @@ class message_state : public bb::BASE_STATE
 
 void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score)
 {
-	message.main_message = std::move(main_message);
+	message.main_message = main_message;
 
-	message.complimentary_message = std::move(complimentary_message);
+	message.complimentary_message = complimentary_message;
 
-	message.next_button_text = std::move(next_button_text);
+	message.next_button_text = next_button_text;
 
 	message.score = score;
 }

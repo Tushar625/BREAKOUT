@@ -16,6 +16,10 @@ Data:
 
 Enter:
 
+	set s_data.paddle to random color and size
+
+	set s_data.ball to random color
+
 	set s_data.paddle in the middle
 
 	set s_data.ball dx, dy to random values and put it on the middle of the s_data.paddle
