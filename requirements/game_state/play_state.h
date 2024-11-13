@@ -110,12 +110,12 @@ class play_state : public bb::BASE_STATE
 
 			if (side.left)
 			{
-				ball.dx = -(std::abs(ball.dx));	// always goes left
+				ball.dx = -(std::abs(ball.dx)) - ((dir == -1) ? 35 : 0);	// always goes left
 			}
 			
 			if (side.right)
 			{
-				ball.dx = std::abs(ball.dx);	// always goes right
+				ball.dx = std::abs(ball.dx) + ((dir == 1) ? 35 : 0);	// always goes right
 			}
 
 			if (!side.bottom)

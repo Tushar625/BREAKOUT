@@ -79,6 +79,26 @@ class highest_score_state : public bb::BASE_STATE
 			*/
 
 			menu[0].set_pos(VIRTUAL_WIDTH / 2, yout + boxh, bb::BOTTOM_CENTER);
+
+			/*
+											  Screen Width
+				|----------------------------------------------------------------------| -
+																						 |
+																						 |
+									|=========MAIN MESSAGE=========|                     |
+									|                              |                     |
+									|                              |                     |
+									|                              |                     |
+									|                              |                     |
+									|          SCORE TEXT          |                     | Screen Height
+									|                              |                     |
+									|                              |                     |
+									|                              |                     |
+						            |____________BUTTON____________|                     |
+																						 |
+																						 |
+																						 -
+			*/
 		}
 	} *b_data;
 

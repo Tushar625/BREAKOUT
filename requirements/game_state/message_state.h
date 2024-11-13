@@ -103,6 +103,26 @@ class message_state : public bb::BASE_STATE
 			menu[0].set_pos(90, yout + boxh, bb::BOTTOM_LEFT);
 
 			menu[1].set_pos(VIRTUAL_WIDTH - 90, yout + boxh, bb::BOTTOM_RIGHT);
+
+			/*
+			                                  Screen Width
+				|----------------------------------------------------------------------| -
+			                                                                             |
+			                                                                             |
+									|=========MAIN MESSAGE=========|                     |
+									|                              |                     |
+									|                              |                     |
+									|                              |                     |
+									|          SCORE TEXT          |                     |
+									|                              |                     | Screen Height
+									|         COMP MESSAGE         |                     |
+									|                              |                     |
+									|                              |                     |
+						BUTTON1     |______________________________|     BUTTON2         |
+											                                             |
+																						 |
+																						 -
+			*/
 		}
 	} *b_data;
 
