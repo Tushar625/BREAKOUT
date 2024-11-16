@@ -122,33 +122,18 @@ struct game_data_type
 
 	int health;
 
+	/*
+		data of this structure is stored in AppData\Local\Breakout\data.bin
+	*/
+
 	game_data_type() : level(0), highest_score(0), score_till_last_level(0), health(MAX_HEALTH)
 	{
-		FILE* file = NULL;
-
-		file = fopen("breakout", "rb");
-
-		if (file)
-		{
-			// file found
-
-			fread(this, sizeof(game_data_type), 1, file);	// read ths object out ofthe file
-
-			fclose(file);
-		}
+		bb::load_local_appdata("Breakout\\data.bin", *this);
 	}
 
 	~game_data_type()
 	{
-		// load this data back into a file
-
-		FILE* file = NULL;
-
-		file = fopen("breakout", "wb");
-
-		fwrite(this, sizeof(game_data_type), 1, file);
-
-		fclose(file);
+		bb::store_local_appdata("Breakout\\data.bin", *this);
 	}
 
 	// after game is over this functon is used to reset the general game data
