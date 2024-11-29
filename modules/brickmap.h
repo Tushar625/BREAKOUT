@@ -215,9 +215,7 @@ public:
 
 	inline void collision(ball_class& ball, int &score, bb::Firecracker& explo) noexcept
 	{
-		bool flag = true;	// used to indicate if all bricks are destroyed
-
-		for(int i = 0; i < bricks_data.size(); i++)
+		for(int i = 0; i < bricks_data.size();)
 		{
 			int ib = i * 6;	// 6 vertices represent a brick
 
@@ -227,18 +225,9 @@ public:
 
 			bricks_data_structure& brick_data = bricks_data[i];
 
-			// destroyed bricks are sent to a position (-100, -100)
-
-			const bool visible = (brick_x != -100);	// checking x coordinate is enough
-
-			if(flag && visible)
-			{
-				flag = false;	// we still have some brick left
-			}
-
 			double xout, yout;	// gets the point of collision on the brick
 
-			if (visible && ball.collids(xout, yout, sf::FloatRect(brick_x, brick_y, m_brickW, m_brickH)))
+			if (ball.collids(xout, yout, sf::FloatRect(brick_x, brick_y, m_brickW, m_brickH)))
 			{
 				// a brick is visible and collids with the ball
 
@@ -332,9 +321,9 @@ public:
 
 					// destroy the brick and its data
 
-					// destroyed bricks are sent to a position (-100, -100)
+					bricks.erase(std::cbegin(bricks) + ib, std::cbegin(bricks) + ib + 6);
 
-					make_brick_vertex(ib, -100, -100, 0, 0);
+					bricks_data.erase(std::begin(bricks_data) + i);
 				}
 				else
 				{
@@ -343,13 +332,12 @@ public:
 					make_brick_vertex(ib, brick_x, brick_y, --brick_data.color, brick_data.tier);
 				}
 			}
-		}
+			else
+			{
+				// no collision
 
-		if (flag)
-		{
-			// all bricks are destroyed flag doesn't become false
-
-			clear();
+				++i;
+			}
 		}
 	}
 
