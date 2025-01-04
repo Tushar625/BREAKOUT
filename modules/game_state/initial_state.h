@@ -122,6 +122,8 @@ private:
 		
 		if (sel == 2 || bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
 		{
+			Exit();
+
 			return EXIT_CODE;
 		}
 
