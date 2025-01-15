@@ -23,6 +23,8 @@
 
 #include<utility>
 
+#include<memory>
+
 #include"constants.h"
 
 #include"util.h"

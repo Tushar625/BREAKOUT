@@ -7,8 +7,6 @@
 
 extern class play_state play;
 
-void set_play_state(game_data_type* i_data, level_data_type* s_data);
-
 
 
 class serve_state : public bb::BASE_STATE
@@ -40,6 +38,13 @@ class serve_state : public bb::BASE_STATE
 		cyan.a = 100;
 
 		instructions.setFillColor(cyan);
+	}
+
+	// following functions are used to send data to serve state from initial state
+
+	void init(game_data_type* _i_data)
+	{
+		i_data = _i_data;
 	}
 
 	private:
@@ -74,7 +79,7 @@ class serve_state : public bb::BASE_STATE
 		}
 	}
 
-	int Update(double dt)
+	void Update(double dt)
 	{
 		s_data.explo.update(dt);
 
@@ -86,9 +91,7 @@ class serve_state : public bb::BASE_STATE
 
 			sound.play();
 
-			set_play_state(i_data, &s_data);
-
-			game_state.change_to(play);
+			game_state.change_to(play, i_data, &s_data);
 		}
 
 		if (bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
@@ -110,8 +113,6 @@ class serve_state : public bb::BASE_STATE
 		{
 			s_data.ball.x += dir * s_data.paddle.dx * dt;
 		}
-
-		return -1;
 	}
 
 	void Render()
@@ -146,10 +147,3 @@ class serve_state : public bb::BASE_STATE
 	}
 
 }serve;
-
-// following functions are used to send data to serve state from initial state
-
-void set_serve_state(game_data_type* i_data)
-{
-	serve.i_data = i_data;
-}

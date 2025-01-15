@@ -7,13 +7,9 @@
 
 extern class serve_state serve;
 
-void set_serve_state(game_data_type* i_data);
-
 
 
 extern class highest_score_state highest_score;
-
-void set_highest_score_state(int score);
 
 
 
@@ -37,7 +33,7 @@ class initial_state : public bb::BASE_STATE
 				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 70, "START", bb::BOTTOM_CENTER),
 				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 40, "HIGHEST SCORE", bb::BOTTOM_CENTER),
 				str_button(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 10, "QUIT", bb::BOTTOM_CENTER)
-			},
+		},
 			menu({ &button_arr[0], &button_arr[1], &button_arr[2] })
 		{
 			breakout = large_text;
@@ -52,11 +48,13 @@ class initial_state : public bb::BASE_STATE
 
 			breakout.setPosition(sf::Vector2f(xout, yout - 10));
 		}
-	} *b_data;
+	};
+	
+	std::unique_ptr<data> b_data;
 
 public:
 
-	initial_state() : b_data(nullptr)
+	initial_state()
 	{}
 
 private:
@@ -68,7 +66,7 @@ private:
 
 	void Enter()
 	{
-		b_data = new data();	// creating the local state data
+		b_data = std::make_unique<data>();	// creating the local state data
 
 		music.setLoop(true);
 
@@ -76,7 +74,7 @@ private:
 	}
 
 
-	int Update(double dt)
+	void Update(double dt)
 	{
 		auto mpos = bb::INPUT.pointer();
 
@@ -108,26 +106,18 @@ private:
 
 		if (sel == 0)
 		{
-			set_serve_state(&i_data);	// sending data to serve state
-
-			game_state.change_to(serve);
+			game_state.change_to(serve, &i_data);
 		}
 
 		if (sel == 1)
 		{
-			set_highest_score_state(i_data.highest_score);	// sending data to serve state
-
-			game_state.change_to(highest_score);
+			game_state.change_to(highest_score, i_data.highest_score);
 		}
 		
 		if (sel == 2 || bb::INPUT.isPressed(sf::Keyboard::Scan::Escape))
 		{
-			Exit();
-
-			return EXIT_CODE;
+			game_state.change_to(bb::NULL_STATE);
 		}
-
-		return -1;
 	}
 
 
@@ -141,7 +131,7 @@ private:
 
 	void Exit()
 	{
-		delete b_data;	// destroying the local state data
+		b_data.reset();	// destroying the local state data
 
 		music.stop();
 	}

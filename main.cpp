@@ -5,6 +5,8 @@
 
 #define GAME_CLEAR
 
+//#define MSVC_DETECT_MEMORY_LEAK
+
 #include"modules/requirements.h"
 
 
@@ -58,8 +60,10 @@ inline bool bb::Game::Update(double dt)
 {
 	// exit
 
-	if (bb::INPUT.isClosed() || game_state.Update(dt) == EXIT_CODE)
+	if (bb::INPUT.isClosed() || game_state.null_state())
 		return STOP_GAME_LOOP;
+
+	game_state.Update(dt);
 
 	return !STOP_GAME_LOOP;
 }

@@ -124,7 +124,9 @@ class message_state : public bb::BASE_STATE
 																						 -
 			*/
 		}
-	} *b_data;
+	};
+
+	std::unique_ptr<data> b_data;
 
 
 	public:
@@ -136,8 +138,21 @@ class message_state : public bb::BASE_STATE
 
 	int score;
 
-	message_state() : b_data(nullptr), score(0)
+	message_state() : score(0)
 	{}
+
+	// following function is used to send data to message state state
+
+	void init(const std::string& _main_message, const std::string& _complimentary_message, const std::string& _next_button_text, int _score)
+	{
+		main_message = _main_message;
+
+		complimentary_message = _complimentary_message;
+
+		next_button_text = _next_button_text;
+
+		score = _score;
+	}
 
 
 	private:
@@ -150,7 +165,7 @@ class message_state : public bb::BASE_STATE
 	{
 		// creating the local state data
 
-		b_data = new data(main_message, complimentary_message, next_button_text, score);	// creating the data used in this state
+		b_data = std::make_unique<data>(main_message, complimentary_message, next_button_text, score);	// creating the data used in this state
 
 		// following strings are not necessary anymore as the sf::Text objects are created
 
@@ -162,7 +177,7 @@ class message_state : public bb::BASE_STATE
 	}
 
 
-	int Update(double dt)
+	void Update(double dt)
 	{
 		auto mpos = bb::INPUT.pointer();
 
@@ -199,8 +214,6 @@ class message_state : public bb::BASE_STATE
 		{
 			game_state.change_to(initial);
 		}
-
-		return -1;
 	}
 
 
@@ -220,20 +233,7 @@ class message_state : public bb::BASE_STATE
 
 	void Exit()
 	{
-		delete b_data;	// delete the local state data
+		b_data.reset();	// delete the local state data
 	}
 
 }message;
-
-// following function is used to send data to message state state
-
-void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score)
-{
-	message.main_message = main_message;
-
-	message.complimentary_message = complimentary_message;
-
-	message.next_button_text = next_button_text;
-
-	message.score = score;
-}

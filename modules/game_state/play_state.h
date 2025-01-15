@@ -9,8 +9,6 @@
 
 extern class message_state message;
 
-void set_message_state(const std::string& main_message, const std::string& complimentary_message, const std::string& next_button_text, int score);
-
 
 
 class play_state : public bb::BASE_STATE
@@ -46,13 +44,22 @@ class play_state : public bb::BASE_STATE
 		instructions.setFillColor(cyan);
 	}
 
+	// following functions are used to send data to play state from serve state
+
+	void init(game_data_type* _i_data, level_data_type* _s_data)
+	{
+		i_data = _i_data;
+
+		s_data = _s_data;
+	}
+
 	private:
 
 	sf::Text msg, instructions;
 
 	sf::Sound sound;
 
-	int Update(double dt)
+	void Update(double dt)
 	{
 		auto& ball = s_data->ball;
 
@@ -160,12 +167,10 @@ class play_state : public bb::BASE_STATE
 
 				i_data->reset(s_data->current_level_score);
 
-				set_message_state(main_message, complimentary_message, next_button_text, score);
-
-				game_state.change_to(message);
+				game_state.change_to(message, main_message, complimentary_message, next_button_text, score);
 			}
 
-			return -1;
+			return;
 		}
 
 		//======================
@@ -196,11 +201,9 @@ class play_state : public bb::BASE_STATE
 
 			int score = i_data->score_till_last_level;
 
-			set_message_state(main_message, complimentary_message, next_button_text, score);
+			game_state.change_to(message, main_message, complimentary_message, next_button_text, score);
 
-			game_state.change_to(message);
-
-			return -1;
+			return;
 		}
 
 		//=====
@@ -215,8 +218,6 @@ class play_state : public bb::BASE_STATE
 
 			game_state.change_to(serve);
 		}
-
-		return -1;
 	}
 
 	void Render()
@@ -249,12 +250,3 @@ class play_state : public bb::BASE_STATE
 	}
 
 }play;
-
-// following functions are used to send data to play state from serve state
-
-void set_play_state(game_data_type* i_data, level_data_type* s_data)
-{
-	play.i_data = i_data;
-
-	play.s_data = s_data;
-}

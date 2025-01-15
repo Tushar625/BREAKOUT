@@ -113,6 +113,13 @@ class highest_score_state : public bb::BASE_STATE
 	highest_score_state() : b_data(nullptr), score(0)
 	{}
 
+	// following functions are used to send data to this state from initial states
+
+	void init(int _score)
+	{
+		score = _score;
+	}
+
 	private:
 
 
@@ -125,7 +132,7 @@ class highest_score_state : public bb::BASE_STATE
 	}
 
 
-	int Update(double dt)
+	void Update(double dt)
 	{
 		auto mpos = bb::INPUT.pointer();
 
@@ -157,8 +164,6 @@ class highest_score_state : public bb::BASE_STATE
 		{
 			game_state.change_to(initial);
 		}
-
-		return -1;
 	}
 
 
@@ -178,10 +183,3 @@ class highest_score_state : public bb::BASE_STATE
 	}
 
 }highest_score;
-
-// following functions are used to send data to this state from initial states
-
-void set_highest_score_state(int score)
-{
-	highest_score.score = score;
-}
