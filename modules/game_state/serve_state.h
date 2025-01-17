@@ -42,7 +42,7 @@ class serve_state : public bb::BASE_STATE
 
 	// following functions are used to send data to serve state from initial state
 
-	void init(game_data_type* _i_data)
+	void init(game_data_type* _i_data) noexcept
 	{
 		i_data = _i_data;
 	}

@@ -115,7 +115,7 @@ class highest_score_state : public bb::BASE_STATE
 
 	// following functions are used to send data to this state from initial states
 
-	void init(int _score)
+	void init(int _score) noexcept
 	{
 		score = _score;
 	}

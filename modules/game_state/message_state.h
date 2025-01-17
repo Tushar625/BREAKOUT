@@ -143,7 +143,7 @@ class message_state : public bb::BASE_STATE
 
 	// following function is used to send data to message state state
 
-	void init(const std::string& _main_message, const std::string& _complimentary_message, const std::string& _next_button_text, int _score)
+	void init(const std::string& _main_message, const std::string& _complimentary_message, const std::string& _next_button_text, int _score) noexcept
 	{
 		main_message = _main_message;
 
